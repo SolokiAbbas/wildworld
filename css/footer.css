@@ -1,0 +1,13 @@
+.footer{
+  display: flex;
+  justify-content: start;
+  flex-direction: row;
+}
+.git{
+  width: 60px;
+  height: 60px;
+}
+.linked{
+  width: 60px;
+  height: 60px;
+}

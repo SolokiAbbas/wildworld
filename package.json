@@ -1,0 +1,27 @@
+{
+  "name": "Wild_World",
+  "version": "1.0.0",
+  "description": "=======================================================================",
+  "main": "webpack.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SolokiAbbas/wildworld.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^2.3.3"
+},
+  "bugs": {
+    "url": "https://github.com/SolokiAbbas/wildworld/issues"
+  },
+  "homepage": "https://github.com/SolokiAbbas/wildworld#readme"
+}
