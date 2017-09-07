@@ -1,3 +1,4 @@
+import MovingParts from './moving_parts';
 
 const PATH = {
   first: [5,400],
@@ -10,13 +11,15 @@ const PATH = {
   eighth: [500,1000]
 };
 
-class Monsters {
+class Monsters extends MovingParts {
   constructor(options){
+    super(options);
+    this.pos = PATH.first.slice();
     this.name = options.name;
     this.hp = options.hp;
     this.worth = options.worth;
-    this.pos = PATH.first.slice();
     this.path = "first";
+    this.radius = 50;
   }
 
   move(){

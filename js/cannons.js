@@ -1,14 +1,15 @@
+import Bullet from './bullets';
 
-class Cannons {
+class Cannon {
   constructor(options){
     this.name = options.name;
-    this.bulletSpeed = options.bulletSpeed;
-    this.bulletRadius = options.bulletRadius;
     this.pos = options.pos;
     this.cost = options.cost;
+    this.direction = options.direction;
+    this.bulletSpeed = options.bulletSpeed;
   }
 
-  firebullet(){
-    
-  }
+
 }
+
+export default Cannon;
