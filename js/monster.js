@@ -1,6 +1,6 @@
 
 const PATH = {
-  first: [0,400],
+  first: [5,400],
   second: [400,200],
   third: [200,200],
   fourth: [200,600],
@@ -15,34 +15,30 @@ class Monsters {
     this.name = options.name;
     this.hp = options.hp;
     this.worth = options.worth;
-    this.pos = PATH.first;
+    this.pos = PATH.first.slice();
     this.path = "first";
   }
 
   move(){
     if(this.path === "first"){
-      this.pos[0]+=20;
-      if(this.pos[0]>=400){
+      this.pos[0]+=5;
+      if(this.pos[0]===400){
         this.path = "second";
       }
     }else if(this.path === "second"){
-        this.pos[1]-=20;
+        this.pos[1]-=5;
         if (this.pos[1] === 200){
           this.path = "third";
         }
       }else if (this.path === "third"){
-        this.pos[0]+=20;
-        if(this.pos[0]>=1000){
+        this.pos[0]+=5;
+        if(this.pos[0]>=905){
           this.path="done";
         }
       }
     }
 
 
-
-  pos(num){
-    return this.pos[num];
-  }
 
 }
 

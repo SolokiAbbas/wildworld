@@ -4,13 +4,30 @@ class GameView {
     this.game = game;
   }
   start(){
+    this.game.addMonster();
     requestAnimationFrame(this.animate.bind(this));
   }
 
   animate(){
-
-  this.game.moveObjects();
-  this.game.draw(this.ctx);
+    let backgroundImage = new Image();
+    backgroundImage.src = 'images/background/grass.jpg';
+    backgroundImage.onload = () =>{
+      this.ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      let backgroundImage2 = new Image();
+      backgroundImage2.src = 'images/cannons/dragon-cannon.png';
+      backgroundImage2.onload = () =>{
+        this.ctx.drawImage(backgroundImage2, 1010,50, 100,50);
+      };
+    };
+    this.ctx.font = "26px arial";
+    this.ctx.fillStyle = 'White';
+    this.ctx.fillText("Shop Here", 1015, 30);
+    if(this.game.difficulty === 2){
+      this.game.increaseMonsterNumbers();
+      this.game.addMonster();
+    }
+    this.game.moveObjects();
+    this.game.draw(this.ctx);
 
   setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 100-this.game.difficulty);
   }
