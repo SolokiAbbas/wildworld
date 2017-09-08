@@ -7,7 +7,7 @@ class MovingParts{
 
   isCollidedWith(otherObject){
     const center = Util.dist(this.pos, otherObject.pos);
-    return center < (60);
+    return center < (35);
   }
 }
 

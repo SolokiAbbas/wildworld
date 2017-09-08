@@ -1,5 +1,6 @@
 import Bullet from './bullets';
 
+
 class Cannon {
   constructor(options){
     this.name = options.name;

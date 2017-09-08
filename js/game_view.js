@@ -6,10 +6,10 @@ class GameView {
   start(){
     this.game.addMonster();
     this.game.addCannons();
-
     for(let i = 0; i<10; i++){
       this.game.addBullets();
     }
+    this.game.addAllBullets();
     requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -35,7 +35,7 @@ class GameView {
     this.game.fireBullets();
     this.game.draw(this.ctx);
 
-  setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 10-this.game.difficulty);
+   setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 30-this.game.difficulty);
   }
 }
 

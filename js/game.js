@@ -12,6 +12,11 @@ class Game {
     this.difficulty = 1;
     this.gap = 50;
     this.monsterNumbers = 10;
+    this.monsterImage = new Image();
+    this.monsterImage.src = 'images/monsters/beargif.gif';
+    this.cannonImage = new Image();
+    this.cannonImage.src = 'images/cannons/dragon-cannon.png';
+
   }
 
   addBullets(){
@@ -19,6 +24,7 @@ class Game {
     for(let i = 0; i<this.cannons.length; i++){
       let options = {
         pos: this.cannons[i].pos.slice(),
+        origin: this.cannons[i].pos.slice(),
         direction: this.cannons[i].direction
       };
       const bull = new Bullet(options);
@@ -46,14 +52,32 @@ class Game {
     let options2 = {
       name: name,
       bulletSpeed: 1,
-      pos: [800,200],
+      pos: [200,200],
       cost: 200,
       direction: "south",
     };
+    let options3 = {
+      name: name,
+      bulletSpeed: 1,
+      pos: [900,50],
+      cost: 200,
+      direction: "west",
+    };
+    let options4 = {
+      name: name,
+      bulletSpeed: 1,
+      pos: [300,300],
+      cost: 200,
+      direction: "east",
+    };
+    const can4 = new Cannon(options4);
+    const can3 = new Cannon(options3);
     const can2 = new Cannon(options2);
     const can = new Cannon(options);
     this.cannons.push(can);
     this.cannons.push(can2);
+    this.cannons.push(can3);
+    this.cannons.push(can4);
   }
 
   addMonster(name = "Normal Bear"){
@@ -93,79 +117,108 @@ class Game {
   }
 
   checkCollisions(){
+    let k;
     for (let i = 0; i < this.monsters.length; i++) {
-      for (let j = 0; j < this.bullets.length; j++) {
-        if(this.monsters.length >= 1){
-          if(this.monsters[i].isCollidedWith(this.bullets[j])){
+      for (let j = 0; j < this.cannons.length; j++) {
+        for(k = 0; k<this.allBullets[j].length;k++){
+        if(this.monsters.length >= 1 && this.allBullets[j].length>1){
+          if(typeof this.monsters[i] === 'undefined' || typeof this.allBullets[j][k] === 'undefined'){
+            continue;
+          }
+          if(this.monsters[i].isCollidedWith(this.allBullets[j][k])){
             this.remove(this.monsters[i]);
+            this.destroyBullet(j, this.allBullets[j][k]);
+            }
           }
         }
+        k=0;
       }
     }
   }
 
+  addAllBullets(){
+    let j;
+    for(let i = 0; i<this.cannons.length; i++){
+      this.allBullets[i] = [];
+      for(j=1; j<this.bullets.length;j++){
+        if(this.bullets[i].origin.toString() === this.bullets[j].origin.toString()){
+          this.allBullets[i].push(this.bullets[j]);
+        }
+      }
+      j=i+1;
+    }
+  }
+
+  outsideBullets(){
+    let j;
+    for (let i = 0; i < this.cannons.length; i++) {
+      for(j = 0; j<this.allBullets[i].length;j++){
+          if(this.allBullets[i][j].pos[0]>990 || this.allBullets[i][j].pos[0] < 5){
+            this.destroyBullet(i, this.allBullets[i][j]);
+          } else if(this.allBullets[i][j].pos[1]>990 || this.allBullets[i][j].pos[1] < 5){
+            this.destroyBullet(i, this.allBullets[i][j]);
+            }
+        }
+        j=0;
+      }
+    }
+    removeAllBullets(){
+      for(let i=0; i<this.cannons.length;i++){
+        this.allBullets[i]=[];
+      }
+    }
 
   fireBullets(){
-    for(let i = 0; i<this.bullets.length; i++){
-      for(let j=1; j<this.bullets.length;j++){
-        if(this.bullets[i].origin === this.bullets[j].origin){
-          this.allBullets[i]=this.bullets[i].pos;
-        }
-        j=i+1;
-      }
-    }
-
-    if(this.bullets.length >=1){
-      this.bullets[0].bulletPath();
-      for(let i = 1; i<this.bullets.length;i++){
-        let prevBull = this.bullets[i-1];
-        if(Math.abs(prevBull.pos[0]-this.bullets[i].pos[0]) > 100 || Math.abs(prevBull.pos[1]-this.bullets[i].pos[1]) > 100){
-          this.bullets[i].bulletPath();
+    if(this.monsters.length === 0){
+      this.removeAllBullets();
+    } else{
+    for(let i = 0; i<this.cannons.length; i++){
+      if(this.allBullets[i].length !== 0){
+        this.outsideBullets();
+        this.allBullets[i][0].bulletPath();
+      for(let j=1;j<this.allBullets[i].length;j++){
+        let prevBull = this.allBullets[i][j-1];
+        if(Math.abs(prevBull.pos[0]-this.allBullets[i][j].pos[0]) > 400 || Math.abs(prevBull.pos[1]-this.allBullets[i][j].pos[1]) > 200){
+          this.allBullets[i][j].bulletPath();
         }
       }
-    }
-  }
-
-
-  rateOfFire(speed){
-
-  }
+    }}
+  }}
 
   remove(object){
     this.monsters.splice(this.monsters.indexOf(object), 1);
   }
+  destroyBullet(origin, bullet){
+    this.allBullets[origin].splice(this.allBullets[origin].indexOf(bullet), 1);
+  }
 
   draw(ctx){
-    let monsterImage = new Image();
     let backgroundImage = new Image();
-    let cannonImage = new Image();
     backgroundImage.src = 'images/background/grass.jpg';
-    monsterImage.src = 'images/monsters/beargif.gif';
-    cannonImage.src = 'images/cannons/dragon-cannon.png';
-
-      monsterImage.onload = () =>{
-        this.monsters.forEach((object)=>{
-          ctx.drawImage(monsterImage, object.pos[0],object.pos[1], 100, 50);
-          if(object.path === "done" ){
-            this.remove(object);
-          }
-
-
-      }
-    );
-
-    this.bullets.forEach((bullet)=>{
-      ctx.fillStyle = 'black';
-      ctx.fillRect(bullet.pos[0], bullet.pos[1], 10,10);
-    });
-  };
-
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
-        ctx.drawImage(cannonImage, object.pos[0], object.pos[1], 75, 50);
-
+        ctx.drawImage(this.cannonImage, object.pos[0], object.pos[1], 75, 50);
       });
+          this.monsters.forEach((object)=>{
+
+            ctx.drawImage(this.monsterImage, object.pos[0],object.pos[1], 100, 50);
+            if(object.path === "done" ){
+              this.remove(object);
+            }
+          }
+      );
+      let j;
+      for(let i = 0; i<this.cannons.length; i++){
+        for(j=0; j<this.allBullets[i].length;j++){
+          let bull = this.allBullets[i][j];
+          if( bull.pos.toString() !== bull.origin.toString()){
+            ctx.fillStyle = 'black';
+            ctx.fillRect(this.allBullets[i][j].pos[0], this.allBullets[i][j].pos[1], 10,10);
+        }}
+        j=0;
+      }
+
     };
 
   }
