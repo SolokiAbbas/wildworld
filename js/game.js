@@ -29,29 +29,29 @@ class Game {
       switch(this.cannons[i].direction){
         case "south":
         options = {
-          pos: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
-          origin: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          pos: [this.cannons[i].pos[0]+22, this.cannons[i].pos[1]],
+          origin: [this.cannons[i].pos[0]+22, this.cannons[i].pos[1]],
           direction: this.cannons[i].direction
         };
         break;
         case "north":
         options = {
-          pos: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
-          origin: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          pos: [this.cannons[i].pos[0]+22, this.cannons[i].pos[1]],
+          origin: [this.cannons[i].pos[0]+22, this.cannons[i].pos[1]],
           direction: this.cannons[i].direction
         };
         break;
         case "west":
         options = {
-          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
-          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
+          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
           direction: this.cannons[i].direction
         };
         break;
         case "east":
         options = {
-          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
-          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
+          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
           direction: this.cannons[i].direction
         };
         break;
@@ -137,7 +137,7 @@ class Game {
     for(let i=1;i<this.monsters.length;i++){
       let prevMon = this.monsters[i-1];
 
-      if(Math.abs(prevMon.pos[0]-this.monsters[i].pos[0]) > this.gap*2 || Math.abs(prevMon.pos[1]-this.monsters[i].pos[1]) > 0){
+      if(Math.abs(prevMon.pos[0]-this.monsters[i].pos[0]) > this.gap*3 || Math.abs(prevMon.pos[1]-this.monsters[i].pos[1]) > 0){
 
         this.monsters[i].move();
       }
@@ -154,9 +154,9 @@ class Game {
           if(typeof this.monsters[i] === 'undefined' || typeof this.allBullets[j][k] === 'undefined'){
             continue;
           }
-          if(this.monsters[i].isCollidedWith(this.allBullets[j][k])){
+          if(this.monsters[i].isCollidedWith(this.allBullets[j][k]) && this.allBullets[j][k].null !== "not real"){
             this.remove(this.monsters[i]);
-            this.destroyBullet(j, this.allBullets[j][k]);
+            this.nullBullet(j,k);
             }
           }
         }
@@ -182,9 +182,9 @@ class Game {
     let j;
     for (let i = 0; i < this.cannons.length; i++) {
       for(j = 0; j<this.allBullets[i].length;j++){
-          if(this.allBullets[i][j].pos[0]>990 || this.allBullets[i][j].pos[0] < 5){
+          if(this.allBullets[i][j].pos[0]>985 || this.allBullets[i][j].pos[0] < 5){
             this.destroyBullet(i, this.allBullets[i][j]);
-          } else if(this.allBullets[i][j].pos[1]>990 || this.allBullets[i][j].pos[1] < 5){
+          } else if(this.allBullets[i][j].pos[1]>985 || this.allBullets[i][j].pos[1] < 5){
             this.destroyBullet(i, this.allBullets[i][j]);
             }
         }
@@ -207,7 +207,7 @@ class Game {
         this.allBullets[i][0].bulletPath();
       for(let j=1;j<this.allBullets[i].length;j++){
         let prevBull = this.allBullets[i][j-1];
-        if(Math.abs(prevBull.pos[0]-this.allBullets[i][j].pos[0]) > 400 || Math.abs(prevBull.pos[1]-this.allBullets[i][j].pos[1]) > 200){
+        if(Math.abs(prevBull.pos[0]-this.allBullets[i][j].pos[0]) > this.gap*5 || Math.abs(prevBull.pos[1]-this.allBullets[i][j].pos[1]) > 200){
           this.allBullets[i][j].bulletPath();
         }
       }
@@ -219,6 +219,10 @@ class Game {
   }
   destroyBullet(origin, bullet){
     this.allBullets[origin].splice(this.allBullets[origin].indexOf(bullet), 1);
+  }
+
+  nullBullet(i,j){
+    this.allBullets[i][j].unrealBullet();
   }
 
   draw(ctx){
@@ -248,10 +252,11 @@ class Game {
         }
       });
           this.monsters.forEach((object)=>{
-
-            ctx.drawImage(this.monsterImage, object.pos[0],object.pos[1], 100, 50);
-            if(object.path === "done" ){
-              this.remove(object);
+            if(object.pos.toString() !== "5,400"){
+              ctx.drawImage(this.monsterImage, object.pos[0],object.pos[1], 100, 50);
+              if(object.path === "done" ){
+                this.remove(object);
+              }
             }
           }
       );
@@ -259,8 +264,7 @@ class Game {
       for(let i = 0; i<this.cannons.length; i++){
         for(j=0; j<this.allBullets[i].length;j++){
           let bull = this.allBullets[i][j];
-          if( bull.pos.toString() !== bull.origin.toString()){
-
+          if( bull.pos.toString() !== bull.origin.toString() && bull.null !== "not real"){
             ctx.drawImage(this.bulletImage, this.allBullets[i][j].pos[0], this.allBullets[i][j].pos[1], 20,20);
         }}
         j=0;

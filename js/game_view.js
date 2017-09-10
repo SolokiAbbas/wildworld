@@ -2,7 +2,9 @@ class GameView {
   constructor(game, ctx){
     this.ctx = ctx;
     this.game = game;
+    this.dragok = false;
   }
+
   start(){
     this.game.addMonster();
     this.game.addCannons();
@@ -26,7 +28,7 @@ class GameView {
     };
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
-    this.ctx.fillText("Shop Here", 1015, 30);
+    this.ctx.fillText("Shop Here", 1045, 30);
     if(this.game.difficulty === 2){
       this.game.increaseMonsterNumbers();
       this.game.addMonster();
@@ -35,7 +37,7 @@ class GameView {
     this.game.fireBullets();
     this.game.draw(this.ctx);
 
-   setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 30-this.game.difficulty);
+   setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35-this.game.difficulty);
   }
 }
 

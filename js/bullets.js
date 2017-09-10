@@ -7,6 +7,7 @@ class Bullet extends MovingParts {
     this.origin = options.origin;
     this.direction = options.direction;
     this.radius = 10;
+    this.null = "real";
   }
 
   bulletPath(){
@@ -24,6 +25,10 @@ class Bullet extends MovingParts {
         this.pos[0]-=4;
         break;
       }
+    }
+
+    unrealBullet(){
+      this.null = "not real";
     }
   }
 
