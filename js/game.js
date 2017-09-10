@@ -16,17 +16,46 @@ class Game {
     this.monsterImage.src = 'images/monsters/beargif.gif';
     this.cannonImage = new Image();
     this.cannonImage.src = 'images/cannons/dragon-cannon.png';
-
+    this.cannonImageStraight = new Image();
+    this.cannonImageStraight.src = 'images/cannons/dragon-cannon-straight.png';
+    this.bulletImage = new Image();
+    this.bulletImage.src = 'images/spr_bullet_strip.png';
   }
 
   addBullets(){
     if(this.cannons.length>0){
     for(let i = 0; i<this.cannons.length; i++){
-      let options = {
-        pos: this.cannons[i].pos.slice(),
-        origin: this.cannons[i].pos.slice(),
-        direction: this.cannons[i].direction
-      };
+      let options = {};
+      switch(this.cannons[i].direction){
+        case "south":
+        options = {
+          pos: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          origin: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          direction: this.cannons[i].direction
+        };
+        break;
+        case "north":
+        options = {
+          pos: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          origin: [this.cannons[i].pos[0]+25, this.cannons[i].pos[1]],
+          direction: this.cannons[i].direction
+        };
+        break;
+        case "west":
+        options = {
+          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          direction: this.cannons[i].direction
+        };
+        break;
+        case "east":
+        options = {
+          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+25],
+          direction: this.cannons[i].direction
+        };
+        break;
+    }
       const bull = new Bullet(options);
       this.bullets.push(bull);
     }}
@@ -198,7 +227,25 @@ class Game {
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
-        ctx.drawImage(this.cannonImage, object.pos[0], object.pos[1], 75, 50);
+        ctx.save();
+        switch(object.direction){
+          case "north":
+            ctx.drawImage(this.cannonImageStraight, object.pos[0], object.pos[1], 75, 50);
+            break;
+          case "south":
+            ctx.scale(1,-1);
+            ctx.drawImage(this.cannonImageStraight, object.pos[0], -object.pos[1], 75, 50);
+            ctx.restore();
+            break;
+          case "east":
+            ctx.scale(-1,1);
+            ctx.drawImage(this.cannonImage, -object.pos[0], object.pos[1], 75, 50);
+            ctx.restore();
+            break;
+          case "west":
+            ctx.drawImage(this.cannonImage, object.pos[0], object.pos[1], 75, 50);
+            break;
+        }
       });
           this.monsters.forEach((object)=>{
 
@@ -213,8 +260,8 @@ class Game {
         for(j=0; j<this.allBullets[i].length;j++){
           let bull = this.allBullets[i][j];
           if( bull.pos.toString() !== bull.origin.toString()){
-            ctx.fillStyle = 'black';
-            ctx.fillRect(this.allBullets[i][j].pos[0], this.allBullets[i][j].pos[1], 10,10);
+
+            ctx.drawImage(this.bulletImage, this.allBullets[i][j].pos[0], this.allBullets[i][j].pos[1], 20,20);
         }}
         j=0;
       }
