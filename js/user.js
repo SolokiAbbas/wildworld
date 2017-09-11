@@ -5,6 +5,15 @@ class User {
     this.gold = 500;
     this.cannons = 2;
     this.lives = 3;
+    this.levelsPassed = 0;
+  }
+
+  incrementLevels(){
+    this.levelsPassed +=1;
+  }
+
+  currentLevel(){
+    return this.levelsPassed;
   }
 
   showGold(){
@@ -21,6 +30,10 @@ class User {
 
   removeLife(num){
     this.lives-=num;
+  }
+
+  showLife(){
+    return this.lives;
   }
 
 }

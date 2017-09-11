@@ -2,6 +2,7 @@ import Monster from './monster';
 import Cannon from './cannons';
 import Bullet from './bullets';
 import Util from './util';
+import User from './user';
 
 class Game {
   constructor(){
@@ -11,6 +12,7 @@ class Game {
     this.monsters = [];
     this.difficulty = 1;
     this.gap = 50;
+    this.user = new User();
     this.monsterNumbers = 10;
     this.monsterImage = new Image();
     this.monsterImage.src = 'images/monsters/beargif.gif';
@@ -24,6 +26,8 @@ class Game {
     this.cannonImageEast.src = 'images/cannons/dragon-cannon-east.png';
     this.bulletImage = new Image();
     this.bulletImage.src = 'images/spr_bullet_strip.png';
+    this.hearts = new Image();
+    this.hearts.src = 'images/heart.png';
   }
 
   addBullets(){
@@ -71,7 +75,18 @@ class Game {
   }
 
   addGold(){
-    setTimeout(()=>this.user.addGold(10), 10000);
+    setInterval(()=>this.user.addGold(10), 10000);
+  }
+
+  currentGold(){
+    this.user.showGold();
+  }
+
+  drawGold(ctx){
+    ctx.font = "26px arial";
+    ctx.fillStyle = 'White';
+    ctx.fillText(`Gold: ${this.user.showGold()}`, 470, 670);
+    ctx.fillText(`Level: ${this.user.currentLevel()}`, 890, 670);
   }
 
   addCannons(cannon){
@@ -178,6 +193,7 @@ class Game {
   fireBullets(){
     if(this.monsters.length === 0){
       this.removeAllBullets();
+      this.bullets=[];
     } else{
     for(let i = 0; i<this.cannons.length; i++){
       if(this.allBullets[i].length !== 0){
@@ -272,8 +288,14 @@ class Game {
     let backgroundImage = new Image();
     backgroundImage.src = 'images/background/grass.jpg';
     backgroundImage.onload = () =>{
+
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.drawGrid(ctx);
+      this.drawGold(ctx);
+      for(let i = 0; i<this.user.showLife();i++){
+        ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
+      }
+
       this.cannons.forEach((object)=>{
         ctx.save();
         switch(object.direction){

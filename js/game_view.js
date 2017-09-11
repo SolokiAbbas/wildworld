@@ -35,9 +35,9 @@ class GameView {
       this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
       this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
       this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
-      this.drawGrid();
     };
     this.clickedShop();
+    this.game.addGold();
 
     requestAnimationFrame(this.setupAnimate.bind(this));
   }
@@ -46,11 +46,8 @@ class GameView {
   setupAnimate(){
 
     if(this.setupmode === true){
-
       this.game.drawCannons(this.ctx);
       setTimeout(() => requestAnimationFrame(this.setupAnimate.bind(this)), 35);
-    } else {
-      // this.start();
     }
   }
 
@@ -72,16 +69,48 @@ class GameView {
         y: e.clientY
       };
         if(Util.dist([pos.x, pos.y], [1150,90]) < 40){
-
+          this.ctx.beginPath();
+          this.ctx.moveTo(1150, 70);
+          this.ctx.lineTo(1175, 90);
+          this.ctx.lineTo(1175, 50);
+          this.ctx.fillStyle = "black";
+          this.ctx.fill();
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,100, 120,300);
           this.singleCannon.direction = "west";
         }else if(Util.dist([pos.x, pos.y], [1150,160]) < 40){
-
+          this.ctx.beginPath();
+          this.ctx.moveTo(1150, 140);
+          this.ctx.lineTo(1175, 160);
+          this.ctx.lineTo(1175, 120);
+          this.ctx.fillStyle = "black";
+          this.ctx.fill();
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,170, 120,250);
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,49, 120,50);
           this.singleCannon.direction = "east";
         }else if(Util.dist([pos.x, pos.y], [1150,290]) < 55){
-
+          this.ctx.beginPath();
+          this.ctx.moveTo(1150, 240);
+          this.ctx.lineTo(1175, 260);
+          this.ctx.lineTo(1175, 220);
+          this.ctx.fillStyle = "black";
+          this.ctx.fill();
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,265, 120,150);
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,49, 120,150);
           this.singleCannon.direction = "north";
         }else if(Util.dist([pos.x, pos.y], [1150,420]) < 55){
-
+          this.ctx.beginPath();
+          this.ctx.moveTo(1150, 370);
+          this.ctx.lineTo(1175, 390);
+          this.ctx.lineTo(1175, 350);
+          this.ctx.fillStyle = "black";
+          this.ctx.fill();
+          this.ctx.fillStyle = "grey";
+          this.ctx.fillRect(1149,49, 120,300);
           this.singleCannon.direction = "south";
         }
 
