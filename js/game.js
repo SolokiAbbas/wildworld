@@ -33,8 +33,8 @@ class Game {
       switch(this.cannons[i].direction){
         case "south":
         options = {
-          pos: [this.cannons[i].pos[0]+12, this.cannons[i].pos[1]],
-          origin: [this.cannons[i].pos[0]+12, this.cannons[i].pos[1]],
+          pos: [this.cannons[i].pos[0]+16, this.cannons[i].pos[1]+53],
+          origin: [this.cannons[i].pos[0]+16, this.cannons[i].pos[1]+53],
           direction: this.cannons[i].direction
         };
         break;
@@ -54,8 +54,8 @@ class Game {
         break;
         case "east":
         options = {
-          pos: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
-          origin: [this.cannons[i].pos[0], this.cannons[i].pos[1]+22],
+          pos: [this.cannons[i].pos[0]+55, this.cannons[i].pos[1]+12],
+          origin: [this.cannons[i].pos[0]+55, this.cannons[i].pos[1]+12],
           direction: this.cannons[i].direction
         };
         break;
@@ -221,14 +221,10 @@ class Game {
             ctx.drawImage(this.cannonImageNorth, object.pos[0], object.pos[1], 50, 75);
             break;
           case "south":
-            ctx.scale(1,-1);
-            ctx.drawImage(this.cannonImageNorth, object.pos[0], -object.pos[1], 50, 75);
-            ctx.restore();
+            ctx.drawImage(this.cannonImageSouth, object.pos[0], object.pos[1], 50, 75);
             break;
           case "east":
-            ctx.scale(-1,1);
-            ctx.drawImage(this.cannonImageWest, -object.pos[0], object.pos[1], 75, 50);
-            ctx.restore();
+            ctx.drawImage(this.cannonImageEast, object.pos[0], object.pos[1], 75, 50);
             break;
           case "west":
             ctx.drawImage(this.cannonImageWest, object.pos[0], object.pos[1], 75, 50);
@@ -271,7 +267,7 @@ class Game {
     ctx.strokeStyle = "#C6CCCF";
     ctx.stroke();
   }
-  
+
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = 'images/background/grass.jpg';
