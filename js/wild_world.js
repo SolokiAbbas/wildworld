@@ -9,5 +9,6 @@ document.addEventListener("DOMContentLoaded", function(){
   ctx.fillRect(1006, 5, 200, 700);
   const game = new Game;
 
-  new GameView(game, ctx).start();
+  new GameView(game, ctx).setup();
+
 });
