@@ -257,12 +257,27 @@ class Game {
     };
 
   }
+  drawGrid(ctx){
+    for (var x = 5; x < 1000; x += 150) {
+      ctx.moveTo(x, 5);
+      ctx.lineTo(x, 605);
+    }
 
+    for (var y = 5; y < 750; y += 150) {
+      ctx.moveTo(5, y);
+      ctx.lineTo(1000, y);
+    }
+
+    ctx.strokeStyle = "#C6CCCF";
+    ctx.stroke();
+  }
+  
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = 'images/background/grass.jpg';
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      this.drawGrid(ctx);
       this.cannons.forEach((object)=>{
         ctx.save();
         switch(object.direction){

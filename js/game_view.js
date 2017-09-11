@@ -35,9 +35,9 @@ class GameView {
       this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
       this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
       this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
+      this.drawGrid();
     };
     this.clickedShop();
-    this.drawGrid();
 
     requestAnimationFrame(this.setupAnimate.bind(this));
   }
@@ -48,9 +48,9 @@ class GameView {
     if(this.setupmode === true){
 
       this.game.drawCannons(this.ctx);
-      setTimeout(()=>requestAnimationFrame(this.setupAnimate.bind(this)), 35);
-    }else {
-      this.start();
+      setTimeout(() => requestAnimationFrame(this.setupAnimate.bind(this)), 35);
+    } else {
+      // this.start();
     }
   }
 
@@ -117,21 +117,6 @@ class GameView {
     });
   }
 
-  drawGrid(){
-    for (var x = 5; x < 1000; x += 150) {
-      this.ctx.moveTo(x, 5);
-      this.ctx.lineTo(x, 605);
-    }
-
-    for (var y = 5; y < 750; y += 150) {
-      this.ctx.moveTo(5, y);
-      this.ctx.lineTo(1000, y);
-    }
-
-    this.ctx.strokeStyle = "#C6CCCF";
-    this.ctx.stroke();
-  }
-
   animate(){
     this.backgroundImage = new Image();
     this.backgroundImage.src = 'images/background/grass.jpg';
@@ -155,8 +140,9 @@ class GameView {
     if(this.game.monsters.length === 0){
       this.setupmode = true;
       this.setupAnimate();
+    } else {
+      setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35-this.game.difficulty);
     }
-   setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35-this.game.difficulty);
   }
 }
 
