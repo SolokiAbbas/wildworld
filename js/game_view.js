@@ -7,6 +7,7 @@ class GameView {
     this.game = game;
     this.setupmode = true;
     this.singleCannon = {name: "Drag", cost: 500};
+    this.speed = 4;
     this.shopWest = new Image();
     this.shopWest.src = 'images/cannons/dragon-cannon-west.png';
     this.shopNorth = new Image();
@@ -52,10 +53,12 @@ class GameView {
   }
 
   start(){
-    this.game.addMonster();
-    for(let i = 0; i<10; i++){
+      this.game.addMonster();
+      this.game.increaseMonsterNumbers();
+    for(let i = 0; i<20; i++){
       this.game.addBullets();
     }
+    this.increaseSpeed();
     this.game.addAllBullets();
     requestAnimationFrame(this.animate.bind(this));
   }
@@ -145,7 +148,9 @@ class GameView {
         }
     });
   }
-
+  increaseSpeed(){
+    this.speed +=1;
+  }
   animate(){
     this.backgroundImage = new Image();
     this.backgroundImage.src = 'images/background/grass.jpg';
@@ -159,18 +164,14 @@ class GameView {
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Shop Here", 1045, 30);
-    if(this.game.difficulty === 2){
-      this.game.increaseMonsterNumbers();
-      this.game.addMonster();
-    }
-    this.game.moveMonsters();
+    this.game.moveMonsters(this.speed);
     this.game.fireBullets();
     this.game.draw(this.ctx);
     if(this.game.monsters.length === 0){
       this.setupmode = true;
       this.setupAnimate();
     } else {
-      setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35-this.game.difficulty);
+      setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35);
     }
   }
 }

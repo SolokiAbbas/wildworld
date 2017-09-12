@@ -10,10 +10,9 @@ class Game {
     this.allBullets = {};
     this.cannons = [];
     this.monsters = [];
-    this.difficulty = 1;
     this.gap = 50;
     this.user = new User();
-    this.monsterNumbers = 10;
+    this.monsterNumbers = 5;
     this.monsterImage = new Image();
     this.monsterImage.src = 'images/monsters/beargif.gif';
     this.cannonImageWest = new Image();
@@ -97,7 +96,8 @@ class Game {
         dup = true;
       }
     }
-    if(dup === false){
+    if(dup === false && can.cost <= this.user.showGold()){
+      this.user.removeGold(can.cost);
       this.cannons.push(can);
     }
   }
@@ -120,19 +120,21 @@ class Game {
   }
 
   increaseMonsterNumbers(){
-    this.monsterNumbers += 1;
+    if (this.user.currentLevel() % 2 === 0){
+      this.monsterNumbers += 1;
+    }
   }
 
-  moveMonsters(){
+  moveMonsters(speed){
     this.checkCollisions();
     if(this.monsters.length >= 1){
-    this.monsters[0].move();
+    this.monsters[0].move(speed);
     for(let i=1;i<this.monsters.length;i++){
       let prevMon = this.monsters[i-1];
 
       if(Math.abs(prevMon.pos[0]-this.monsters[i].pos[0]) > this.gap*3 || Math.abs(prevMon.pos[1]-this.monsters[i].pos[1]) > 0){
 
-        this.monsters[i].move();
+        this.monsters[i].move(speed);
       }
     }
     }
@@ -149,6 +151,7 @@ class Game {
           }
           if(this.monsters[i].isCollidedWith(this.allBullets[j][k]) && this.allBullets[j][k].null !== "not real"){
             this.remove(this.monsters[i]);
+            this.user.addGold(35);
             this.nullBullet(j,k);
             }
           }
@@ -194,6 +197,7 @@ class Game {
     if(this.monsters.length === 0){
       this.removeAllBullets();
       this.bullets=[];
+      this.user.incrementLevels();
     } else{
     for(let i = 0; i<this.cannons.length; i++){
       if(this.allBullets[i].length !== 0){
@@ -221,7 +225,15 @@ class Game {
 
   removePreviousCannon(){
     if(this.cannons.length !== 0){
-      this.cannons.pop();
+      this.user.addGold(this.cannons.pop().cost);
+    }
+  }
+  
+  isGameOver(){
+    if(this.user.showLife() === 0){
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -251,6 +263,7 @@ class Game {
             if(object.pos.toString() !== "5,400"){
               ctx.drawImage(this.monsterImage, object.pos[0],object.pos[1], 100, 50);
               if(object.path === "done" ){
+                this.user.removeLife(1);
                 this.remove(object);
               }
             }

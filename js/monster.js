@@ -22,29 +22,29 @@ class Monsters extends MovingParts {
     this.radius = 50;
   }
 
-  move(){
+  move(speed){
     if(this.path === "first"){
-      this.pos[0]+=5;
-      if(this.pos[0]===400){
+      this.pos[0]+=speed;
+      if(this.pos[0]>=400 && this.pos[1]===400){
         this.path = "second";
       }
     }else if(this.path === "second"){
-        this.pos[1]-=5;
-        if (this.pos[1] === 200){
+        this.pos[1]-=speed;
+        if (this.pos[1] <= 200 && this.pos[0]>=400){
           this.path = "third";
         }
       }else if (this.path === "third"){
-        this.pos[0]+=5;
-        if(this.pos[0]===705){
+        this.pos[0]+=speed;
+        if(this.pos[0]>=705 && this.pos[1] <=200){
           this.path="fourth";
         }
       }else if(this.path === "fourth"){
-        this.pos[1]+=5;
-        if(this.pos[1]===550){
+        this.pos[1]+=speed;
+        if(this.pos[1]>=550 && this.pos[0] >=705){
           this.path="fifth";
         }
       }else if(this.path === "fifth"){
-        this.pos[0]+=5;
+        this.pos[0]+=speed;
         if(this.pos[0]>=920){
           this.path="done";
         }
