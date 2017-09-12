@@ -148,9 +148,11 @@ class GameView {
         }
     });
   }
+  
   increaseSpeed(){
     this.speed +=1;
   }
+
   animate(){
     this.backgroundImage = new Image();
     this.backgroundImage.src = 'images/background/grass.jpg';
