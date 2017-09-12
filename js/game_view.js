@@ -1,5 +1,6 @@
 import Util from './util';
 import Cannon from './cannons';
+import Game from './game';
 
 class GameView {
   constructor(game, ctx){
@@ -148,9 +149,21 @@ class GameView {
         }
     });
   }
-  
+
   increaseSpeed(){
     this.speed +=1;
+  }
+
+  resetGame(){
+    const game = new Game;
+    const canvasEl = document.querySelector("canvas");
+    const ctx = canvasEl.getContext("2d");
+    ctx.fillStyle = 'grey';
+    ctx.fillRect(1006, 5, 200, 700);
+    this.speed = 4;
+    this.ctx = ctx;
+    this.game = game;
+    this.setupmode = true;
   }
 
   animate(){
@@ -170,6 +183,24 @@ class GameView {
     this.game.fireBullets();
     this.game.draw(this.ctx);
     if(this.game.monsters.length === 0){
+
+      if(this.game.isGameOver()){
+        let modal = document.getElementById('myModal');
+        let span = document.getElementsByClassName("close")[0];
+        modal.style.display = "block";
+        span.onclick = () => {
+          modal.style.display = "none";
+          this.resetGame();
+          this.setup();
+        };
+        window.onclick = (event) => {
+            if (event.target === modal) {
+              modal.style.display = "none";
+                this.resetGame();
+                this.setup();
+            }
+        };
+      }
       this.setupmode = true;
       this.setupAnimate();
     } else {

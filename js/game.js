@@ -228,9 +228,9 @@ class Game {
       this.user.addGold(this.cannons.pop().cost);
     }
   }
-  
+
   isGameOver(){
-    if(this.user.showLife() === 0){
+    if(this.user.showLife() <= 0){
       return true;
     } else {
       return false;
@@ -269,6 +269,9 @@ class Game {
             }
           }
       );
+      for(let i = 0; i<this.user.showLife();i++){
+        ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
+      }
       let j;
       for(let i = 0; i<this.cannons.length; i++){
         for(j=0; j<this.allBullets[i].length;j++){
