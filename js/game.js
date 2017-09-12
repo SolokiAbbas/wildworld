@@ -74,7 +74,7 @@ class Game {
   }
 
   addGold(){
-    setInterval(()=>this.user.addGold(10), 10000);
+    setInterval(()=>this.user.addGold(50), 10000);
   }
 
   currentGold(){
@@ -96,9 +96,23 @@ class Game {
         dup = true;
       }
     }
+    let tempGold = this.user.showGold();
     if(dup === false && can.cost <= this.user.showGold()){
       this.user.removeGold(can.cost);
       this.cannons.push(can);
+    }
+    if(can.cost > tempGold){
+      let modal2 = document.getElementById('myModal2');
+      let span2 = document.getElementsByClassName("close2")[0];
+      modal2.style.display = "block";
+      span2.onclick = () => {
+        modal2.style.display = "none";
+      };
+      window.onclick = (event) => {
+          if (event.target === modal2) {
+            modal2.style.display = "none";
+          }
+      };
     }
   }
 
@@ -306,7 +320,7 @@ class Game {
     backgroundImage.onload = () =>{
 
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
-      this.drawGrid(ctx);
+      // this.drawGrid(ctx);
       this.drawGold(ctx);
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
