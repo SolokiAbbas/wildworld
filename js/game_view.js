@@ -9,7 +9,7 @@ class GameView {
     this.game = game;
     this.setupmode = true;
     this.singleCannon = {name: "Drag", cost: 500};
-    this.speed = 4;
+    this.speed = 2;
     this.shopWest = new Image();
     this.shopWest.src = 'images/cannons/dragon-cannon-west.png';
     this.shopNorth = new Image();
@@ -144,19 +144,19 @@ class GameView {
         for(let y = 5; y<700; y+=150){
           for(let x = 5; x<1005; x+=150){
             if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "west"){
-              // alert([x,y]);
+
               this.singleCannon.pos = [x+35, y+50];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "east"){
-              // alert([x,y]);
+
               this.singleCannon.pos = [x+35, y+50];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "north"){
-              // alert([x,y]);
+
               this.singleCannon.pos = [x+50, y+30];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "south"){
-              // alert([x,y]);
+
               this.singleCannon.pos = [x+50 , y+30];
               this.game.addCannons(this.singleCannon);
             }
@@ -179,7 +179,7 @@ class GameView {
 
   resetGame(){
     const game = new Game;
-    this.speed = 4;
+    this.speed = 2;
     this.game = game;
     this.setupmode = true;
     this.ctx.removeEventListener('click');

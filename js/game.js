@@ -12,7 +12,7 @@ class Game {
     this.monsters = [];
     this.gap = 50;
     this.user = new User();
-    this.monsterNumbers = 5;
+    this.monsterNumbers = 3;
     this.monsterImage = new Image();
     this.monsterImage.src = 'images/monsters/beargif.gif';
     this.cannonImageWest = new Image();
@@ -165,7 +165,7 @@ class Game {
           }
           if(this.monsters[i].isCollidedWith(this.allBullets[j][k]) && this.allBullets[j][k].null !== "not real"){
             this.remove(this.monsters[i]);
-            this.user.addGold(35);
+            this.user.addGold(50);
             this.nullBullet(j,k);
             }
           }
