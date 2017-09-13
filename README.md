@@ -17,7 +17,7 @@ User will be able to
 
 The game will start out with a hero. He will start with a default style of almost nothing in his building. Stuff can be dragged and dropped onto the page to build stuff.
 
-[Board1](docs/wireframe-board1.png)
+![Board1](./docs/wireframes/wireframe-board1.png)
 
 
 ### Architecture and Technologies
@@ -51,4 +51,4 @@ Finish implementing the logic.
 
 There can be a second part to the game can involve more complex weaponry types with different troops, making the game more customizable and more difficult.
 
-[Board2](docs/fighting-board2.png)
+![Board2](./docs/wireframes/fighting-board2.png)
