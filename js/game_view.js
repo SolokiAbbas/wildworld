@@ -4,6 +4,7 @@ import Game from './game';
 
 class GameView {
   constructor(game, ctx){
+    this.intro = true;
     this.ctx = ctx;
     this.game = game;
     this.setupmode = true;
@@ -20,6 +21,28 @@ class GameView {
   }
 
   setup(){
+    if(this.intro){
+      let intromodal = document.getElementById('introModal');
+      let introspan = document.getElementsByClassName("next")[0];
+      let intromodal2 = document.getElementById('introModal2');
+      let introspan2 = document.getElementsByClassName("close4")[0];
+      intromodal.style.display = "block";
+      introspan.onclick = () => {
+        intromodal.style.display = "none";
+        intromodal2.style.display = "block";
+        introspan2.onclick = () =>{
+          intromodal2.style.display = "none";
+        };
+        window.onclick = (event) => {
+            if (event.target === intromodal2 || event.target === intromodal) {
+              intromodal2.style.display = "none";
+              intromodal.style.display = "none";
+            }
+        };
+      };
+
+      this.intro = false;
+    }
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Shop Here", 1045, 30);
@@ -156,14 +179,10 @@ class GameView {
 
   resetGame(){
     const game = new Game;
-    const canvasEl = document.querySelector("canvas");
-    const ctx = canvasEl.getContext("2d");
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(1006, 5, 200, 700);
     this.speed = 4;
-    this.ctx = ctx;
     this.game = game;
     this.setupmode = true;
+    this.ctx.removeEventListener('click');
   }
 
   animate(){

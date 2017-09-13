@@ -30,17 +30,17 @@ class Monsters extends MovingParts {
       }
     }else if(this.path === "second"){
         this.pos[1]-=speed;
-        if (this.pos[1] <= 200 && this.pos[0]>=400){
+        if (this.pos[1] <= 280 && this.pos[0]>=400){
           this.path = "third";
         }
       }else if (this.path === "third"){
         this.pos[0]+=speed;
-        if(this.pos[0]>=705 && this.pos[1] <=200){
+        if(this.pos[0]>=680 && this.pos[1] <=280){
           this.path="fourth";
         }
       }else if(this.path === "fourth"){
         this.pos[1]+=speed;
-        if(this.pos[1]>=550 && this.pos[0] >=705){
+        if(this.pos[1]>=550 && this.pos[0] >=680){
           this.path="fifth";
         }
       }else if(this.path === "fifth"){
