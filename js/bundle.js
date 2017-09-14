@@ -187,6 +187,8 @@ class MovingParts{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bullets__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sprite_js__ = __webpack_require__(9);
+
 
 
 
@@ -194,7 +196,7 @@ class MovingParts{
 
 
 class Game {
-  constructor(){
+  constructor(background){
     this.bullets = [];
     this.allBullets = {};
     this.cannons = [];
@@ -216,6 +218,7 @@ class Game {
     this.bulletImage.src = 'images/spr_bullet_strip.png';
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
+    this.background = background;
   }
 
   addBullets(){
@@ -343,7 +346,15 @@ class Game {
     }
   }
 
+  newSprite(pos){
+    const sprite = new __WEBPACK_IMPORTED_MODULE_5__sprite_js__["a" /* default */](pos);
+
+    sprite.drawFrame();
+  }
+
   checkCollisions(){
+    let audioPunch = document.getElementById("punch");
+    audioPunch.volume = 0.3;
     let k;
     for (let i = 0; i < this.monsters.length; i++) {
       for (let j = 0; j < this.cannons.length; j++) {
@@ -356,6 +367,8 @@ class Game {
             this.remove(this.monsters[i]);
             this.user.addGold(50);
             this.nullBullet(j,k);
+            audioPunch.play();
+            setInterval(this.newSprite(this.allBullets[j][k].pos), 200);
             }
           }
         }
@@ -442,7 +455,7 @@ class Game {
 
   draw(ctx){
     let backgroundImage = new Image();
-    backgroundImage.src = 'images/background/grass.jpg';
+    backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
@@ -505,7 +518,7 @@ class Game {
 
   drawCannons(ctx){
     let backgroundImage = new Image();
-    backgroundImage.src = 'images/background/grass.jpg';
+    backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
 
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
@@ -602,14 +615,15 @@ class GameView {
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Start Battle", 1040, 680);
     this.backgroundImage = new Image();
-    this.backgroundImage.src = 'images/background/grass.jpg';
-    this.backgroundImage.onload = () =>{
-      this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.backgroundImage.src = this.game.background.src;
+    this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.shopSouth.onload = () => {
       this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
       this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
       this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
       this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
     };
+
     this.clickedShop();
     this.game.addGold();
 
@@ -727,7 +741,7 @@ class GameView {
   }
 
   resetGame(){
-    const game = new __WEBPACK_IMPORTED_MODULE_2__game__["a" /* default */];
+    const game = new __WEBPACK_IMPORTED_MODULE_2__game__["a" /* default */](this.game.background);
     this.speed = 2;
     this.game = game;
     this.setupmode = true;
@@ -736,7 +750,7 @@ class GameView {
 
   animate(){
     this.backgroundImage = new Image();
-    this.backgroundImage.src = 'images/background/grass.jpg';
+    this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
       this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
       this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
@@ -863,7 +877,53 @@ document.addEventListener("DOMContentLoaded", function(){
   const ctx = canvasEl.getContext("2d");
   ctx.fillStyle = 'grey';
   ctx.fillRect(1006, 5, 200, 700);
-  const game = new __WEBPACK_IMPORTED_MODULE_0__game__["a" /* default */];
+  let bgMusic =document.getElementById("bg-music");
+  bgMusic.volume = 0.1;
+  let volumeControl = document.getElementsByClassName("volume")[0];
+  let punch = document.getElementById("punch");
+  let volumePlay = document.getElementsByClassName("play")[0];
+  let volumeMute = document.getElementsByClassName("mute")[0];
+  volumeControl.onclick = () => {
+    if(volumePlay.id === "true"){
+      volumePlay.id = "false";
+      volumePlay.style.display = "none";
+      bgMusic.volume = 0.0;
+      volumeMute.id = "true";
+      volumeMute.style.display = "block";
+    }else {
+      volumePlay.id = "true";
+      volumePlay.style.display = "block";
+      bgMusic.volume = 0.1;
+      volumeMute.id = "false";
+      volumeMute.style.display = "none";
+    }
+  };
+  let choose = document.getElementById("background");
+    choose.style.display = "block";
+  let background1 = document.getElementById("grass");
+  let background2 = document.getElementById("grass2");
+  let background3 = document.getElementById("yellow");
+  let background4 = document.getElementById("brick");
+  let background = new Image();
+
+  background1.onclick = ()=>{
+    background.src = 'images/background/grass.jpg';
+    choose.style.display="none";
+  };
+  background2.onclick = ()=>{
+    background.src = 'images/background/grassflower.jpg';
+    choose.style.display="none";
+  };
+  background3.onclick = ()=>{
+    background.src = 'images/background/yellow-dirt.jpg';
+    choose.style.display="none";
+  };
+  background4.onclick = ()=>{
+    background.src = 'images/background/brickwallmoss.jpg';
+    choose.style.display="none";
+  };
+
+  const game = new __WEBPACK_IMPORTED_MODULE_0__game__["a" /* default */](background);
 
   new __WEBPACK_IMPORTED_MODULE_1__game_view__["a" /* default */](game, ctx).setup();
 
@@ -916,6 +976,65 @@ class User {
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (User);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+
+class Sprite {
+  constructor(pos){
+    this.spriteWidth = 811;
+    this.spriteHeight= 710;
+    this.rows = 3;
+    this.cols = 3;
+    this.width = this.spriteWidth/this.cols;
+    this.height = this.spriteHeight/this.rows;
+    this.curFrame = 0;
+    this.curYFrame = 0;
+    this.frameCount = 8;
+    this.x = pos[0];
+    this.y = pos[1];
+    this.srcX = 0;
+    this.srcY = 0;
+    this.canvas = document.getElementById("canvasX");
+    this.canvas.width = 255;
+    this.canvas.height = 205;
+    this.ctx = this.canvas.getContext("2d");
+    this.spriteX = new Image();
+    this.spriteX.src = 'images/explosion.png';
+  }
+
+  updateFrame(){
+    this.srcX = this.curFrame * this.width;
+    this.srcY = this.curYFrame * this.height;
+  this.ctx.clearRect(this.x,this.y,this.width,this.height);
+  if(this.srcX>300){
+  this.srcX = 0;
+  this.curFrame = 0;
+  this.curYFrame +=1;
+  }
+  if(this.curYFrame > 3){
+    this.curYFrame = 0;
+  }
+  this.curFrame = ++this.curFrame % this.frameCount;
+  }
+
+  drawFrame(){
+    this.updateFrame();
+    this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x,this.y,this.width,this.height);
+  }
+
+  draw(){
+    setInterval(this.drawFrame(),100);
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Sprite);
 
 
 /***/ })

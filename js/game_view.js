@@ -53,14 +53,15 @@ class GameView {
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Start Battle", 1040, 680);
     this.backgroundImage = new Image();
-    this.backgroundImage.src = 'images/background/grass.jpg';
-    this.backgroundImage.onload = () =>{
-      this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.backgroundImage.src = this.game.background.src;
+    this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.shopSouth.onload = () => {
       this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
       this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
       this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
       this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
     };
+
     this.clickedShop();
     this.game.addGold();
 
@@ -178,7 +179,7 @@ class GameView {
   }
 
   resetGame(){
-    const game = new Game;
+    const game = new Game(this.game.background);
     this.speed = 2;
     this.game = game;
     this.setupmode = true;
@@ -187,7 +188,7 @@ class GameView {
 
   animate(){
     this.backgroundImage = new Image();
-    this.backgroundImage.src = 'images/background/grass.jpg';
+    this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
       this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
       this.ctx.drawImage(this.shopWest, 1045,50, 100,50);

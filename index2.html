@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id='canvas'></canvas><br />
+<button onclick='moveLeft()'>Left</button>
+<button onclick='moveRight()'>Right</button>
+<script>
+var canvasWidth = 250;
+var canvasHeight = 200;
+
+var spriteWidth = 811;
+var spriteHeight = 710;
+
+var rows = 3;
+var cols = 3;
+
+
+var width = spriteWidth/cols;
+var height = spriteHeight/rows;
+
+var curFrame = 0;
+var curYFrame = 0;
+var frameCount = 8;
+
+var x=5;
+var y=5;
+
+var srcX;
+var srcY;
+
+var left = false;
+var right = true;
+
+var trackRight = 0;
+ var trackLeft = 1;
+
+  var speed = 12;
+
+var canvas = document.getElementById('canvas');
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+var ctx = canvas.getContext("2d");
+
+var character = new Image();
+character.src = "images/explosion.png";
+
+function updateFrame(){
+
+  srcX = curFrame * width;
+  srcY = curYFrame * height;
+ctx.clearRect(x,y,width,height);
+if(srcX>800){
+srcX = 0;
+curFrame = 0;
+curYFrame +=1;
+}
+if(curYFrame > 3){
+  curYFrame = 0;
+}
+curFrame = ++curFrame % frameCount;
+// if(srcY > 600){
+// srcY = 0;
+// }
+// if(left && x>0){
+//  srcY = trackLeft * height;
+//  x-=speed;
+//  }
+//  if(right && x<canvasWidth-width){
+//  srcY = trackRight * height;
+//  x+=speed;
+//  }
+
+}
+
+function draw(){
+updateFrame();
+ctx.drawImage(character,srcX,srcY,width,height,x,y,width,height);
+}
+
+setInterval(draw,100);
+
+</script>
+  </body>
+</html>

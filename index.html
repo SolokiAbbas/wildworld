@@ -7,10 +7,16 @@
     <title></title>
   </head>
   <body>
+    <audio id="bg-music" src="sounds/bg-guitar.mp3" autoplay loop=true></audio>
+    <audio id="punch" src="sounds/punch.mp3"></audio>
     <canvas width=1200 height=705></canvas>
     <script type="application/javascript" src="js/bundle.js"></script>
-
+    <canvas id="canvasX"></canvas>
     <div class="footer">
+      <div class="volume">
+        <img class="play" id="true" src="images/volume-icon.png" alt="Click to Mute"></img>
+        <img class="mute" id="false" src="images/muted-icon.png" alt="Click to Play"></img>
+      </div>
       <div class="images">
         <a href="https://solokiabbas.github.io/"><img class="profile" src="docs/images/profile.png"></img></a>
         <a href="https://github.com/solokiabbas"><img class="git" src="docs/images/githubicon.png"></img></a>
@@ -62,6 +68,19 @@
       </div>
     </div>
 
+    <div id="background" class="background">
+      <div class="modal-background">
+        <h1> Welcome to Wild World!</h1>
+        <h2>Please choose one of the following backgrounds!</h2>
+        <h1>Play in Full Screen for best play!</h1>
+        <div class="back-images">
+          <img class="brick" id="brick"src="images/background/brickwallmoss.jpg" alt="brick"></img>
+          <img class="grass" id="grass"src="images/background/grass.jpg" alt="grass"></img>
+          <img class="grass2" id="grass2"src="images/background/grassflower.jpg" alt="grassflower"></img>
+          <img class="yellow"id="yellow" src="images/background/yellow-dirt.jpg" alt="dirt"></img>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>

@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
+  width: 100%;
+  height: 15%;
 }
 
 .git{
@@ -23,7 +25,7 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
-  width: 300px;
+  width: 200px;
 }
 
 .creator{
@@ -195,8 +197,88 @@
     text-decoration: none;
     cursor: pointer;
 }
+.background {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-background {
+  text-align: center;
+    background-color: lightgrey;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 60%;
+}
+
+.back-images {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+}
+
+.back-images:hover,
+.back-images:focus {
+    color: lightgrey;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 1;
+}
 
 .intro {
   width: 60%;
   height: 70%;
+}
+
+.volume{
+  display: inherit;
+  width: 60px;
+  height: 60px;
+}
+
+.play{
+  display: block;
+  width: 100%;
+  height: 100%
+}
+
+.mute{
+  display: none;
+  width: 100%;
+  height: 100%
+}
+
+#canvasX{
+  z-index: 4;
+  display:none;
+}
+
+.grass{
+  width: 200px;
+  height: 200px;
+}
+
+.grass2{
+  width: 200px;
+  height: 200px;
+}
+
+.brick{
+  width: 200px;
+  height: 200px;
+}
+
+.yellow{
+  width: 200px;
+  height: 200px;
 }

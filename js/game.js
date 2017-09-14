@@ -3,9 +3,10 @@ import Cannon from './cannons';
 import Bullet from './bullets';
 import Util from './util';
 import User from './user';
+import Sprite from './sprite.js';
 
 class Game {
-  constructor(){
+  constructor(background){
     this.bullets = [];
     this.allBullets = {};
     this.cannons = [];
@@ -27,6 +28,7 @@ class Game {
     this.bulletImage.src = 'images/spr_bullet_strip.png';
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
+    this.background = background;
   }
 
   addBullets(){
@@ -154,7 +156,15 @@ class Game {
     }
   }
 
+  newSprite(pos){
+    const sprite = new Sprite(pos);
+
+    sprite.drawFrame();
+  }
+
   checkCollisions(){
+    let audioPunch = document.getElementById("punch");
+    audioPunch.volume = 0.3;
     let k;
     for (let i = 0; i < this.monsters.length; i++) {
       for (let j = 0; j < this.cannons.length; j++) {
@@ -167,6 +177,8 @@ class Game {
             this.remove(this.monsters[i]);
             this.user.addGold(50);
             this.nullBullet(j,k);
+            audioPunch.play();
+            setInterval(this.newSprite(this.allBullets[j][k].pos), 200);
             }
           }
         }
@@ -253,7 +265,7 @@ class Game {
 
   draw(ctx){
     let backgroundImage = new Image();
-    backgroundImage.src = 'images/background/grass.jpg';
+    backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
@@ -316,7 +328,7 @@ class Game {
 
   drawCannons(ctx){
     let backgroundImage = new Image();
-    backgroundImage.src = 'images/background/grass.jpg';
+    backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
 
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
