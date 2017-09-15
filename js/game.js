@@ -96,7 +96,7 @@ class Game {
     let can = new Cannon(cannon);
     let dup = false;
     for(let i = 0; i<this.cannons.length; i++){
-      if(this.cannons[i].pos.toString() === can.pos.toString()){
+      if(this.cannons[i].origin.toString() === can.origin.toString()){
         dup = true;
       }
     }

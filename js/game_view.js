@@ -67,8 +67,6 @@ class GameView {
     };
 
     this.clickedShop();
-
-
     this.setupAnimate();
   }
 
@@ -151,19 +149,19 @@ class GameView {
         for(let y = 5; y<700; y+=150){
           for(let x = 5; x<1005; x+=150){
             if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "west"){
-
+              this.singleCannon.origin =[x,y];
               this.singleCannon.pos = [x+35, y+50];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "east"){
-
+              this.singleCannon.origin =[x,y];
               this.singleCannon.pos = [x+35, y+50];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "north"){
-
+              this.singleCannon.origin =[x,y];
               this.singleCannon.pos = [x+50, y+30];
               this.game.addCannons(this.singleCannon);
             }else if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "south"){
-
+              this.singleCannon.origin =[x,y];
               this.singleCannon.pos = [x+50 , y+30];
               this.game.addCannons(this.singleCannon);
             }
@@ -175,8 +173,8 @@ class GameView {
 
         if(Util.dist2([pos.x, pos.y], [1100,670]) < 50 && this.setupmode === true){
           this.setupmode = false;
-          this.start();
           canvasEl.removeEventListener('click', interactions);
+          this.start();
         }
     }.bind(this);
     canvasEl.addEventListener('click', interactions);
@@ -192,11 +190,7 @@ class GameView {
     this.speed = 2;
     this.game = game;
     this.setupmode = true;
-    // canvasEl.removeEventListener('click');
-  }
-
-  newSprite(){
-
+    this.game.addGold();
   }
 
   animate(){
@@ -234,9 +228,11 @@ class GameView {
                 this.setup();
             }
         };
+      }else{
+        this.setupmode = true;
+        this.setup();        
       }
-      this.setupmode = true;
-      this.setup();
+
     } else {
       this.requestAnimate = requestAnimationFrame(this.animate.bind(this));
 
