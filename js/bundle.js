@@ -686,7 +686,7 @@ class GameView {
             }
         };
       };
-
+      this.game.addGold();
       this.intro = false;
     }
     this.ctx.font = "26px arial";
@@ -709,7 +709,7 @@ class GameView {
     };
 
     this.clickedShop();
-    this.game.addGold();
+
 
     this.setupAnimate();
   }
@@ -964,7 +964,7 @@ class Monsters extends __WEBPACK_IMPORTED_MODULE_0__moving_parts__["a" /* defaul
 
 class User {
   constructor(){
-    this.gold = 500;
+    this.gold = 50000;
     this.cannons = 2;
     this.lives = 3;
     this.levelsPassed = 0;

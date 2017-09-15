@@ -44,7 +44,7 @@ class GameView {
             }
         };
       };
-
+      this.game.addGold();
       this.intro = false;
     }
     this.ctx.font = "26px arial";
@@ -67,7 +67,7 @@ class GameView {
     };
 
     this.clickedShop();
-    this.game.addGold();
+
 
     this.setupAnimate();
   }
