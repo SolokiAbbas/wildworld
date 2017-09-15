@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function(){
     choose.style.display="none";
   };
 
-  const game = new Game(background);
+  const game = new Game(background, ctx);
 
   new GameView(game, ctx).setup();
 

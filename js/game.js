@@ -6,7 +6,7 @@ import User from './user';
 import Sprite from './sprite.js';
 
 class Game {
-  constructor(background){
+  constructor(background, ctx){
     this.bullets = [];
     this.allBullets = {};
     this.cannons = [];
@@ -29,6 +29,8 @@ class Game {
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
     this.background = background;
+    this.ctx = ctx;
+    this.sprites = [];
   }
 
   addBullets(){
@@ -143,6 +145,7 @@ class Game {
 
   moveMonsters(speed){
     this.checkCollisions();
+
     if(this.monsters.length >= 1){
     this.monsters[0].move(speed);
     for(let i=1;i<this.monsters.length;i++){
@@ -156,10 +159,17 @@ class Game {
     }
   }
 
-  newSprite(pos){
-    const sprite = new Sprite(pos);
+  deletAllSprites(){
+    this.sprites = [];
+  }
 
-    sprite.drawFrame();
+  deleteSprite(){
+    this.sprites.pop();
+  }
+
+  newSpritePos(pos){
+    let sprite = new Sprite(pos, this.ctx);
+    this.sprites.push(sprite);
   }
 
   checkCollisions(){
@@ -175,10 +185,10 @@ class Game {
           }
           if(this.monsters[i].isCollidedWith(this.allBullets[j][k]) && this.allBullets[j][k].null !== "not real"){
             this.remove(this.monsters[i]);
+            this.newSpritePos(this.allBullets[j][k].pos);
             this.user.addGold(50);
             this.nullBullet(j,k);
             audioPunch.play();
-            setInterval(this.newSprite(this.allBullets[j][k].pos), 200);
             }
           }
         }
@@ -264,12 +274,23 @@ class Game {
   }
 
   draw(ctx){
+
+    if (this.sprites.length > 0){
+      for(let i = 0; i<this.sprites.length; i++){
+        this.sprites[i].drawFrame();
+        this.sprites[i].update();
+        if(this.sprites[i].delete === true){
+          this.deleteSprite();
+        }
+      }
+    }
+
+
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
-        ctx.save();
         switch(object.direction){
           case "north":
             ctx.drawImage(this.cannonImageNorth, object.pos[0], object.pos[1], 50, 75);
@@ -295,6 +316,7 @@ class Game {
             }
           }
       );
+
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
       }
@@ -329,10 +351,10 @@ class Game {
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
+    // this.drawGrid(ctx);
     backgroundImage.onload = () =>{
 
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
-      this.drawGrid(ctx);
       this.drawGold(ctx);
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);

@@ -1,6 +1,7 @@
 import Util from './util';
 import Cannon from './cannons';
 import Game from './game';
+import Sprite from './sprite';
 
 class GameView {
   constructor(game, ctx){
@@ -18,6 +19,9 @@ class GameView {
     this.shopSouth.src = 'images/cannons/dragon-cannon-south.png';
     this.shopEast = new Image();
     this.shopEast.src = 'images/cannons/dragon-cannon-east.png';
+    this.requestSetup = 0;
+    this.requestAnimate = 0;
+
   }
 
   setup(){
@@ -65,15 +69,18 @@ class GameView {
     this.clickedShop();
     this.game.addGold();
 
-    requestAnimationFrame(this.setupAnimate.bind(this));
+    this.setupAnimate();
   }
 
 
   setupAnimate(){
-
+    window.cancelAnimationFrame(this.requestAnimate);
+    if(this.game.sprites.length > 0){
+      this.game.deletAllSprites();
+    }
     if(this.setupmode === true){
       this.game.drawCannons(this.ctx);
-      setTimeout(() => requestAnimationFrame(this.setupAnimate.bind(this)), 35);
+      this.request = requestAnimationFrame(this.setupAnimate.bind(this));
     }
   }
 
@@ -88,13 +95,12 @@ class GameView {
     requestAnimationFrame(this.animate.bind(this));
   }
 
-
   clickedShop(){
     const canvasEl = document.querySelector("canvas");
-    canvasEl.addEventListener('click', (e) => {
+    let interactions = function(e){
       const pos = {
-        x: e.clientX,
-        y: e.clientY
+        x: e.offsetX,
+        y: e.offsetY
       };
         if(Util.dist([pos.x, pos.y], [1150,90]) < 40){
           this.ctx.beginPath();
@@ -170,8 +176,10 @@ class GameView {
         if(Util.dist2([pos.x, pos.y], [1100,670]) < 50 && this.setupmode === true){
           this.setupmode = false;
           this.start();
+          canvasEl.removeEventListener('click', interactions);
         }
-    });
+    }.bind(this);
+    canvasEl.addEventListener('click', interactions);
   }
 
   increaseSpeed(){
@@ -179,14 +187,20 @@ class GameView {
   }
 
   resetGame(){
-    const game = new Game(this.game.background);
+    const canvasEl = document.querySelector("canvas");
+    const game = new Game(this.game.background, this.ctx);
     this.speed = 2;
     this.game = game;
     this.setupmode = true;
-    this.ctx.removeEventListener('click');
+    // canvasEl.removeEventListener('click');
+  }
+
+  newSprite(){
+
   }
 
   animate(){
+    window.cancelAnimationFrame(this.request);
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
@@ -222,9 +236,10 @@ class GameView {
         };
       }
       this.setupmode = true;
-      this.setupAnimate();
+      this.setup();
     } else {
-      setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35);
+      this.requestAnimate = requestAnimationFrame(this.animate.bind(this));
+
     }
   }
 }

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -94,100 +94,12 @@ const Util ={
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__moving_parts__ = __webpack_require__(3);
-
-
-class Bullet extends __WEBPACK_IMPORTED_MODULE_0__moving_parts__["a" /* default */] {
-  constructor(options){
-    super(options);
-    this.pos = options.pos.slice();
-    this.origin = options.origin;
-    this.direction = options.direction;
-    this.radius = 10;
-    this.null = "real";
-  }
-
-  bulletPath(){
-    switch(this.direction){
-      case "north":
-        this.pos[1]-=4;
-        break;
-      case "south":
-        this.pos[1]+=4;
-        break;
-      case "east":
-        this.pos[0]+=4;
-        break;
-      case "west":
-        this.pos[0]-=4;
-        break;
-      }
-    }
-
-    unrealBullet(){
-      this.null = "not real";
-    }
-  }
-
-/* harmony default export */ __webpack_exports__["a"] = (Bullet);
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bullets__ = __webpack_require__(1);
-
-
-
-class Cannon {
-  constructor(options){
-    this.name = options.name;
-    this.pos = options.pos;
-    this.cost = options.cost;
-    this.direction = options.direction;
-  }
-
-
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Cannon);
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
-
-
-class MovingParts{
-  constructor(options){
-    this.pos = options.pos;
-  }
-
-  isCollidedWith(otherObject){
-    const center = __WEBPACK_IMPORTED_MODULE_0__util__["a" /* default */].dist(this.pos, otherObject.pos);
-    return center < (39);
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (MovingParts);
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__monster__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cannons__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bullets__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__monster__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cannons__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bullets__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sprite_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sprite_js__ = __webpack_require__(5);
 
 
 
@@ -196,7 +108,7 @@ class MovingParts{
 
 
 class Game {
-  constructor(background){
+  constructor(background, ctx){
     this.bullets = [];
     this.allBullets = {};
     this.cannons = [];
@@ -219,6 +131,8 @@ class Game {
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
     this.background = background;
+    this.ctx = ctx;
+    this.sprites = [];
   }
 
   addBullets(){
@@ -333,6 +247,7 @@ class Game {
 
   moveMonsters(speed){
     this.checkCollisions();
+
     if(this.monsters.length >= 1){
     this.monsters[0].move(speed);
     for(let i=1;i<this.monsters.length;i++){
@@ -346,10 +261,17 @@ class Game {
     }
   }
 
-  newSprite(pos){
-    const sprite = new __WEBPACK_IMPORTED_MODULE_5__sprite_js__["a" /* default */](pos);
+  deletAllSprites(){
+    this.sprites = [];
+  }
 
-    sprite.drawFrame();
+  deleteSprite(){
+    this.sprites.pop();
+  }
+
+  newSpritePos(pos){
+    let sprite = new __WEBPACK_IMPORTED_MODULE_5__sprite_js__["a" /* default */](pos, this.ctx);
+    this.sprites.push(sprite);
   }
 
   checkCollisions(){
@@ -365,10 +287,10 @@ class Game {
           }
           if(this.monsters[i].isCollidedWith(this.allBullets[j][k]) && this.allBullets[j][k].null !== "not real"){
             this.remove(this.monsters[i]);
+            this.newSpritePos(this.allBullets[j][k].pos);
             this.user.addGold(50);
             this.nullBullet(j,k);
             audioPunch.play();
-            setInterval(this.newSprite(this.allBullets[j][k].pos), 200);
             }
           }
         }
@@ -454,12 +376,23 @@ class Game {
   }
 
   draw(ctx){
+
+    if (this.sprites.length > 0){
+      for(let i = 0; i<this.sprites.length; i++){
+        this.sprites[i].drawFrame();
+        this.sprites[i].update();
+        if(this.sprites[i].delete === true){
+          this.deleteSprite();
+        }
+      }
+    }
+
+
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
       this.cannons.forEach((object)=>{
-        ctx.save();
         switch(object.direction){
           case "north":
             ctx.drawImage(this.cannonImageNorth, object.pos[0], object.pos[1], 50, 75);
@@ -485,6 +418,7 @@ class Game {
             }
           }
       );
+
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
       }
@@ -519,10 +453,10 @@ class Game {
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
+    // this.drawGrid(ctx);
     backgroundImage.onload = () =>{
 
       ctx.drawImage(backgroundImage, 5,5, 1000,700);
-      this.drawGrid(ctx);
       this.drawGold(ctx);
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
@@ -553,13 +487,160 @@ class Game {
 
 
 /***/ }),
-/* 5 */
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__moving_parts__ = __webpack_require__(4);
+
+
+class Bullet extends __WEBPACK_IMPORTED_MODULE_0__moving_parts__["a" /* default */] {
+  constructor(options){
+    super(options);
+    this.pos = options.pos.slice();
+    this.origin = options.origin;
+    this.direction = options.direction;
+    this.radius = 10;
+    this.null = "real";
+  }
+
+  bulletPath(){
+    switch(this.direction){
+      case "north":
+        this.pos[1]-=4;
+        break;
+      case "south":
+        this.pos[1]+=4;
+        break;
+      case "east":
+        this.pos[0]+=4;
+        break;
+      case "west":
+        this.pos[0]-=4;
+        break;
+      }
+    }
+
+    unrealBullet(){
+      this.null = "not real";
+    }
+  }
+
+/* harmony default export */ __webpack_exports__["a"] = (Bullet);
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bullets__ = __webpack_require__(2);
+
+
+
+class Cannon {
+  constructor(options){
+    this.name = options.name;
+    this.pos = options.pos;
+    this.cost = options.cost;
+    this.direction = options.direction;
+  }
+
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Cannon);
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cannons__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game__ = __webpack_require__(4);
+
+
+class MovingParts{
+  constructor(options){
+    this.pos = options.pos;
+  }
+
+  isCollidedWith(otherObject){
+    const center = __WEBPACK_IMPORTED_MODULE_0__util__["a" /* default */].dist(this.pos, otherObject.pos);
+    return center < (39);
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (MovingParts);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+
+class Sprite {
+  constructor(pos, ctx){
+    this.ctx = ctx;
+    this.spriteWidth = 811;
+    this.spriteHeight= 710;
+    this.rows = 3;
+    this.cols = 3;
+    this.width = this.spriteWidth/this.cols;
+    this.height = this.spriteHeight/this.rows;
+    this.curFrame = 0;
+    this.curYFrame = 0;
+    this.frameCount = 6;
+    this.x = pos[0];
+    this.y = pos[1];
+    this.srcX = 0;
+    this.srcY = 0;
+    this.spriteX = new Image();
+    this.spriteX.src = 'images/explosion.png';
+    this.delete = false;
+  }
+
+  updateFrame(){
+    this.srcX = this.curFrame * this.width;
+    this.srcY = this.curYFrame * this.height;
+    // this.ctx.clearRect(this.x,this.y,this.width,this.height);
+    if(this.srcX>300){
+    this.srcX = 0;
+    this.curFrame = 0;
+    this.curYFrame +=1;
+  }
+  if(this.curYFrame > 3){
+    this.delete = true;
+  }
+  this.curFrame = ++this.curFrame % this.frameCount;
+  }
+
+  drawFrame(){
+    this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-100,this.y-100,this.width,this.height);
+  }
+
+  update(){
+    this.updateFrame();
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Sprite);
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cannons__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sprite__ = __webpack_require__(5);
+
 
 
 
@@ -580,6 +661,9 @@ class GameView {
     this.shopSouth.src = 'images/cannons/dragon-cannon-south.png';
     this.shopEast = new Image();
     this.shopEast.src = 'images/cannons/dragon-cannon-east.png';
+    this.requestSetup = 0;
+    this.requestAnimate = 0;
+
   }
 
   setup(){
@@ -627,15 +711,18 @@ class GameView {
     this.clickedShop();
     this.game.addGold();
 
-    requestAnimationFrame(this.setupAnimate.bind(this));
+    this.setupAnimate();
   }
 
 
   setupAnimate(){
-
+    window.cancelAnimationFrame(this.requestAnimate);
+    if(this.game.sprites.length > 0){
+      this.game.deletAllSprites();
+    }
     if(this.setupmode === true){
       this.game.drawCannons(this.ctx);
-      setTimeout(() => requestAnimationFrame(this.setupAnimate.bind(this)), 35);
+      this.request = requestAnimationFrame(this.setupAnimate.bind(this));
     }
   }
 
@@ -650,13 +737,12 @@ class GameView {
     requestAnimationFrame(this.animate.bind(this));
   }
 
-
   clickedShop(){
     const canvasEl = document.querySelector("canvas");
-    canvasEl.addEventListener('click', (e) => {
+    let interactions = function(e){
       const pos = {
-        x: e.clientX,
-        y: e.clientY
+        x: e.offsetX,
+        y: e.offsetY
       };
         if(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* default */].dist([pos.x, pos.y], [1150,90]) < 40){
           this.ctx.beginPath();
@@ -732,8 +818,10 @@ class GameView {
         if(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* default */].dist2([pos.x, pos.y], [1100,670]) < 50 && this.setupmode === true){
           this.setupmode = false;
           this.start();
+          canvasEl.removeEventListener('click', interactions);
         }
-    });
+    }.bind(this);
+    canvasEl.addEventListener('click', interactions);
   }
 
   increaseSpeed(){
@@ -741,14 +829,20 @@ class GameView {
   }
 
   resetGame(){
-    const game = new __WEBPACK_IMPORTED_MODULE_2__game__["a" /* default */](this.game.background);
+    const canvasEl = document.querySelector("canvas");
+    const game = new __WEBPACK_IMPORTED_MODULE_2__game__["a" /* default */](this.game.background, this.ctx);
     this.speed = 2;
     this.game = game;
     this.setupmode = true;
-    this.ctx.removeEventListener('click');
+    // canvasEl.removeEventListener('click');
+  }
+
+  newSprite(){
+
   }
 
   animate(){
+    window.cancelAnimationFrame(this.request);
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
@@ -784,9 +878,10 @@ class GameView {
         };
       }
       this.setupmode = true;
-      this.setupAnimate();
+      this.setup();
     } else {
-      setTimeout(()=>requestAnimationFrame(this.animate.bind(this)), 35);
+      this.requestAnimate = requestAnimationFrame(this.animate.bind(this));
+
     }
   }
 }
@@ -795,11 +890,11 @@ class GameView {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__moving_parts__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__moving_parts__ = __webpack_require__(4);
 
 
 const PATH = {
@@ -861,13 +956,61 @@ class Monsters extends __WEBPACK_IMPORTED_MODULE_0__moving_parts__["a" /* defaul
 
 
 /***/ }),
-/* 7 */
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+class User {
+  constructor(){
+    this.gold = 500;
+    this.cannons = 2;
+    this.lives = 3;
+    this.levelsPassed = 0;
+  }
+
+  incrementLevels(){
+    this.levelsPassed +=1;
+  }
+
+  currentLevel(){
+    return this.levelsPassed;
+  }
+
+  showGold(){
+    return this.gold;
+  }
+
+  addGold(amount){
+    this.gold+=amount;
+  }
+
+  removeGold(amount){
+    this.gold-=amount;
+  }
+
+  removeLife(num){
+    this.lives-=num;
+  }
+
+  showLife(){
+    return this.lives;
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (User);
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_view__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_view__ = __webpack_require__(6);
 
 
 
@@ -923,118 +1066,11 @@ document.addEventListener("DOMContentLoaded", function(){
     choose.style.display="none";
   };
 
-  const game = new __WEBPACK_IMPORTED_MODULE_0__game__["a" /* default */](background);
+  const game = new __WEBPACK_IMPORTED_MODULE_0__game__["a" /* default */](background, ctx);
 
   new __WEBPACK_IMPORTED_MODULE_1__game_view__["a" /* default */](game, ctx).setup();
 
 });
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-class User {
-  constructor(){
-    this.gold = 500;
-    this.cannons = 2;
-    this.lives = 3;
-    this.levelsPassed = 0;
-  }
-
-  incrementLevels(){
-    this.levelsPassed +=1;
-  }
-
-  currentLevel(){
-    return this.levelsPassed;
-  }
-
-  showGold(){
-    return this.gold;
-  }
-
-  addGold(amount){
-    this.gold+=amount;
-  }
-
-  removeGold(amount){
-    this.gold-=amount;
-  }
-
-  removeLife(num){
-    this.lives-=num;
-  }
-
-  showLife(){
-    return this.lives;
-  }
-
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (User);
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-
-
-class Sprite {
-  constructor(pos){
-    this.spriteWidth = 811;
-    this.spriteHeight= 710;
-    this.rows = 3;
-    this.cols = 3;
-    this.width = this.spriteWidth/this.cols;
-    this.height = this.spriteHeight/this.rows;
-    this.curFrame = 0;
-    this.curYFrame = 0;
-    this.frameCount = 8;
-    this.x = pos[0];
-    this.y = pos[1];
-    this.srcX = 0;
-    this.srcY = 0;
-    this.canvas = document.getElementById("canvasX");
-    this.canvas.width = 255;
-    this.canvas.height = 205;
-    this.ctx = this.canvas.getContext("2d");
-    this.spriteX = new Image();
-    this.spriteX.src = 'images/explosion.png';
-  }
-
-  updateFrame(){
-    this.srcX = this.curFrame * this.width;
-    this.srcY = this.curYFrame * this.height;
-  this.ctx.clearRect(this.x,this.y,this.width,this.height);
-  if(this.srcX>300){
-  this.srcX = 0;
-  this.curFrame = 0;
-  this.curYFrame +=1;
-  }
-  if(this.curYFrame > 3){
-    this.curYFrame = 0;
-  }
-  this.curFrame = ++this.curFrame % this.frameCount;
-  }
-
-  drawFrame(){
-    this.updateFrame();
-    this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x,this.y,this.width,this.height);
-  }
-
-  draw(){
-    setInterval(this.drawFrame(),100);
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Sprite);
 
 
 /***/ })
