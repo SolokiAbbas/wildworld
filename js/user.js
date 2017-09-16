@@ -3,8 +3,7 @@
 class User {
   constructor(){
     this.gold = 500;
-    this.cannons = 2;
-    this.lives = 3;
+    this.lives = 4;
     this.levelsPassed = 0;
   }
 

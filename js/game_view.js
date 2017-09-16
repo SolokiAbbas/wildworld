@@ -10,7 +10,7 @@ class GameView {
     this.game = game;
     this.setupmode = true;
     this.singleCannon = {name: "Drag", cost: 500};
-    this.speed = 2;
+    this.speed = 1;
     this.shopWest = new Image();
     this.shopWest.src = 'images/cannons/dragon-cannon-west.png';
     this.shopNorth = new Image();
@@ -187,7 +187,7 @@ class GameView {
   resetGame(){
     const canvasEl = document.querySelector("canvas");
     const game = new Game(this.game.background, this.ctx);
-    this.speed = 2;
+    this.speed = 1;
     this.game = game;
     this.setupmode = true;
     this.game.addGold();
@@ -230,7 +230,7 @@ class GameView {
         };
       }else{
         this.setupmode = true;
-        this.setup();        
+        this.setup();
       }
 
     } else {

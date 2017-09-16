@@ -78,7 +78,7 @@ class Game {
   }
 
   addGold(){
-    setInterval(()=>this.user.addGold(50), 10000);
+    setInterval(()=>this.user.addGold(50), 5000);
   }
 
   currentGold(){

@@ -180,7 +180,7 @@ class Game {
   }
 
   addGold(){
-    setInterval(()=>this.user.addGold(50), 10000);
+    setInterval(()=>this.user.addGold(50), 5000);
   }
 
   currentGold(){
@@ -653,7 +653,7 @@ class GameView {
     this.game = game;
     this.setupmode = true;
     this.singleCannon = {name: "Drag", cost: 500};
-    this.speed = 2;
+    this.speed = 1;
     this.shopWest = new Image();
     this.shopWest.src = 'images/cannons/dragon-cannon-west.png';
     this.shopNorth = new Image();
@@ -830,7 +830,7 @@ class GameView {
   resetGame(){
     const canvasEl = document.querySelector("canvas");
     const game = new __WEBPACK_IMPORTED_MODULE_2__game__["a" /* default */](this.game.background, this.ctx);
-    this.speed = 2;
+    this.speed = 1;
     this.game = game;
     this.setupmode = true;
     this.game.addGold();
@@ -873,7 +873,7 @@ class GameView {
         };
       }else{
         this.setupmode = true;
-        this.setup();        
+        this.setup();
       }
 
     } else {
@@ -962,8 +962,7 @@ class Monsters extends __WEBPACK_IMPORTED_MODULE_0__moving_parts__["a" /* defaul
 class User {
   constructor(){
     this.gold = 500;
-    this.cannons = 2;
-    this.lives = 3;
+    this.lives = 4;
     this.levelsPassed = 0;
   }
 
