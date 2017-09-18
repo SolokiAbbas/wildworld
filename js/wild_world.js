@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
   const canvasEl = document.querySelector("canvas");
   const ctx = canvasEl.getContext("2d");
   ctx.fillStyle = 'grey';
-  ctx.fillRect(1006, 5, 200, 700);
+  ctx.fillRect(1015, 5, 200, 700);
   let bgMusic =document.getElementById("bg-music");
   bgMusic.volume = 0.1;
   let volumeControl = document.getElementsByClassName("volume")[0];

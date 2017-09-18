@@ -29,6 +29,8 @@ class Game {
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
     this.background = background;
+    this.grid = new Image();
+    this.grid.src = 'images/made-grid.png';
     this.ctx = ctx;
     this.sprites = [];
   }
@@ -289,7 +291,7 @@ class Game {
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
-      ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      ctx.drawImage(backgroundImage, 5,5, 1015,700);
       this.cannons.forEach((object)=>{
         switch(object.direction){
           case "north":
@@ -333,32 +335,20 @@ class Game {
     };
 
   }
-  drawGrid(ctx){
-    for (var x = 5; x < 1000; x += 150) {
-      ctx.moveTo(x, 5);
-      ctx.lineTo(x, 605);
-    }
-
-    for (var y = 5; y < 750; y += 150) {
-      ctx.moveTo(5, y);
-      ctx.lineTo(1000, y);
-    }
-
-    ctx.strokeStyle = "#C6CCCF";
-    ctx.stroke();
-  }
 
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
-    // this.drawGrid(ctx);
+
     backgroundImage.onload = () =>{
 
-      ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      ctx.drawImage(backgroundImage, 5,5, 1015,700);
       this.drawGold(ctx);
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
       }
+
+      ctx.drawImage(this.grid, 3,4, 1000, 600);
 
       this.cannons.forEach((object)=>{
         ctx.save();

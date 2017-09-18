@@ -137,6 +137,7 @@
     float: right;
     font-size: 36px;
     font-weight: bold;
+    border: 2px solid grey;
 }
 
 .next:hover,
@@ -187,7 +188,7 @@
 .close4 {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 36px;
     font-weight: bold;
 }
 

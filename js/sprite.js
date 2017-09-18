@@ -25,7 +25,6 @@ class Sprite {
   updateFrame(){
     this.srcX = this.curFrame * this.width;
     this.srcY = this.curYFrame * this.height;
-    // this.ctx.clearRect(this.x,this.y,this.width,this.height);
     if(this.srcX>300){
     this.srcX = 0;
     this.curFrame = 0;
@@ -38,7 +37,7 @@ class Sprite {
   }
 
   drawFrame(){
-    this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-100,this.y-100,this.width,this.height);
+      this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-150,this.y-100,this.width,this.height);
   }
 
   update(){

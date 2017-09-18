@@ -131,6 +131,8 @@ class Game {
     this.hearts = new Image();
     this.hearts.src = 'images/heart.png';
     this.background = background;
+    this.grid = new Image();
+    this.grid.src = 'images/made-grid.png';
     this.ctx = ctx;
     this.sprites = [];
   }
@@ -391,7 +393,7 @@ class Game {
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
     backgroundImage.onload = () =>{
-      ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      ctx.drawImage(backgroundImage, 5,5, 1015,700);
       this.cannons.forEach((object)=>{
         switch(object.direction){
           case "north":
@@ -435,32 +437,20 @@ class Game {
     };
 
   }
-  drawGrid(ctx){
-    for (var x = 5; x < 1000; x += 150) {
-      ctx.moveTo(x, 5);
-      ctx.lineTo(x, 605);
-    }
-
-    for (var y = 5; y < 750; y += 150) {
-      ctx.moveTo(5, y);
-      ctx.lineTo(1000, y);
-    }
-
-    ctx.strokeStyle = "#C6CCCF";
-    ctx.stroke();
-  }
 
   drawCannons(ctx){
     let backgroundImage = new Image();
     backgroundImage.src = this.background.src;
-    // this.drawGrid(ctx);
+
     backgroundImage.onload = () =>{
 
-      ctx.drawImage(backgroundImage, 5,5, 1000,700);
+      ctx.drawImage(backgroundImage, 5,5, 1015,700);
       this.drawGold(ctx);
       for(let i = 0; i<this.user.showLife();i++){
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
       }
+
+      ctx.drawImage(this.grid, 3,4, 1000, 600);
 
       this.cannons.forEach((object)=>{
         ctx.save();
@@ -607,7 +597,6 @@ class Sprite {
   updateFrame(){
     this.srcX = this.curFrame * this.width;
     this.srcY = this.curYFrame * this.height;
-    // this.ctx.clearRect(this.x,this.y,this.width,this.height);
     if(this.srcX>300){
     this.srcX = 0;
     this.curFrame = 0;
@@ -620,7 +609,7 @@ class Sprite {
   }
 
   drawFrame(){
-    this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-100,this.y-100,this.width,this.height);
+      this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-150,this.y-100,this.width,this.height);
   }
 
   update(){
@@ -701,13 +690,22 @@ class GameView {
     this.ctx.fillText("Start Battle", 1040, 680);
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
-    this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.ctx.drawImage(this.backgroundImage, 5,5, 1015,700);
+
     this.shopSouth.onload = () => {
-      this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
-      this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
-      this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
-      this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
+      this.ctx.drawImage(this.shopSouth, 1085,320, 50,100);
     };
+    this.shopNorth.onload = () => {
+      this.ctx.drawImage(this.shopNorth, 1085,200, 50,100);
+    };
+    this.shopEast.onload = () => {
+      this.ctx.drawImage(this.shopEast, 1055,120, 100,50);
+    };
+    this.shopWest.onload = () => {
+      this.ctx.drawImage(this.shopWest, 1055,50, 100,50);
+    };
+
+
 
     this.clickedShop();
     this.setupAnimate();
@@ -789,7 +787,7 @@ class GameView {
           this.singleCannon.direction = "south";
         }
 
-        for(let y = 5; y<700; y+=150){
+        for(let y = 5; y<600; y+=150){
           for(let x = 5; x<1005; x+=150){
             if(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* default */].dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "west"){
               this.singleCannon.origin =[x,y];
@@ -841,11 +839,11 @@ class GameView {
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
-      this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
-      this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
-      this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
-      this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
-      this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
+      this.ctx.drawImage(this.backgroundImage, 5,5, 1010,700);
+      this.ctx.drawImage(this.shopWest, 1055,50, 100,50);
+      this.ctx.drawImage(this.shopEast, 1055,120, 100,50);
+      this.ctx.drawImage(this.shopNorth, 1085,200, 50,100);
+      this.ctx.drawImage(this.shopSouth, 1085,320, 50,100);
     };
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
@@ -1015,7 +1013,7 @@ document.addEventListener("DOMContentLoaded", function(){
   const canvasEl = document.querySelector("canvas");
   const ctx = canvasEl.getContext("2d");
   ctx.fillStyle = 'grey';
-  ctx.fillRect(1006, 5, 200, 700);
+  ctx.fillRect(1015, 5, 200, 700);
   let bgMusic =document.getElementById("bg-music");
   bgMusic.volume = 0.1;
   let volumeControl = document.getElementsByClassName("volume")[0];

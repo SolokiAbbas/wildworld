@@ -58,13 +58,22 @@ class GameView {
     this.ctx.fillText("Start Battle", 1040, 680);
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
-    this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
+    this.ctx.drawImage(this.backgroundImage, 5,5, 1015,700);
+
     this.shopSouth.onload = () => {
-      this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
-      this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
-      this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
-      this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
+      this.ctx.drawImage(this.shopSouth, 1085,320, 50,100);
     };
+    this.shopNorth.onload = () => {
+      this.ctx.drawImage(this.shopNorth, 1085,200, 50,100);
+    };
+    this.shopEast.onload = () => {
+      this.ctx.drawImage(this.shopEast, 1055,120, 100,50);
+    };
+    this.shopWest.onload = () => {
+      this.ctx.drawImage(this.shopWest, 1055,50, 100,50);
+    };
+
+
 
     this.clickedShop();
     this.setupAnimate();
@@ -146,7 +155,7 @@ class GameView {
           this.singleCannon.direction = "south";
         }
 
-        for(let y = 5; y<700; y+=150){
+        for(let y = 5; y<600; y+=150){
           for(let x = 5; x<1005; x+=150){
             if(Util.dist2([pos.x, pos.y], [x+70,y+70]) < 60 && this.singleCannon.direction === "west"){
               this.singleCannon.origin =[x,y];
@@ -198,11 +207,11 @@ class GameView {
     this.backgroundImage = new Image();
     this.backgroundImage.src = this.game.background.src;
     this.backgroundImage.onload = () =>{
-      this.ctx.drawImage(this.backgroundImage, 5,5, 1000,700);
-      this.ctx.drawImage(this.shopWest, 1045,50, 100,50);
-      this.ctx.drawImage(this.shopEast, 1045,120, 100,50);
-      this.ctx.drawImage(this.shopNorth, 1075,200, 50,100);
-      this.ctx.drawImage(this.shopSouth, 1075,320, 50,100);
+      this.ctx.drawImage(this.backgroundImage, 5,5, 1010,700);
+      this.ctx.drawImage(this.shopWest, 1055,50, 100,50);
+      this.ctx.drawImage(this.shopEast, 1055,120, 100,50);
+      this.ctx.drawImage(this.shopNorth, 1085,200, 50,100);
+      this.ctx.drawImage(this.shopSouth, 1085,320, 50,100);
     };
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
