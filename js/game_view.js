@@ -50,6 +50,9 @@ class GameView {
     this.ctx.font = "26px arial";
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Shop Here", 1045, 30);
+    this.ctx.font = "16px arial";
+    this.ctx.fillStyle = 'White';
+    this.ctx.fillText("Cost: 500 Gold", 1055, 450);
     this.ctx.font = "20px arial";
     this.ctx.fillStyle = 'White';
     this.ctx.fillText("Remove Cannon", 1035, 550);
