@@ -21,25 +21,19 @@ class GameView {
     this.shopEast.src = 'images/cannons/dragon-cannon-east.png';
     this.requestSetup = 0;
     this.requestAnimate = 0;
+    this.hoverPos = {x: 0, y: 0};
 
   }
 
   setup(){
     if(this.intro){
       let intromodal = document.getElementById('introModal');
-      let introspan = document.getElementsByClassName("next")[0];
-      let intromodal2 = document.getElementById('introModal2');
-      let introspan2 = document.getElementsByClassName("close4")[0];
+      let introspan = document.getElementsByClassName("close4")[0];
       intromodal.style.display = "block";
       introspan.onclick = () => {
         intromodal.style.display = "none";
-        intromodal2.style.display = "block";
-        introspan2.onclick = () =>{
-          intromodal2.style.display = "none";
-        };
         window.onclick = (event) => {
-            if (event.target === intromodal2 || event.target === intromodal) {
-              intromodal2.style.display = "none";
+            if (event.target === intromodal) {
               intromodal.style.display = "none";
             }
         };
@@ -75,13 +69,22 @@ class GameView {
     this.shopWest.onload = () => {
       this.ctx.drawImage(this.shopWest, 1055,50, 100,50);
     };
-
-
-
+    this.addHover();
     this.clickedShop();
     this.setupAnimate();
   }
 
+ addHover(){
+   const canvasEl = document.querySelector("canvas");
+   let hoverPos = (e) => {
+       this.hoverPos.x= e.offsetX;
+       this.hoverPos.y= e.offsetY;
+       if(this.setupmode === false){
+         canvasEl.removeEventListener('mousemove', hoverPos);
+       }
+   };
+   canvasEl.addEventListener('mousemove', hoverPos);
+ }
 
   setupAnimate(){
     window.cancelAnimationFrame(this.requestAnimate);
@@ -89,6 +92,8 @@ class GameView {
       this.game.deletAllSprites();
     }
     if(this.setupmode === true){
+
+      this.game.drawHover(this.ctx, this.hoverPos,this.singleCannon.direction);
       this.game.drawCannons(this.ctx);
       this.request = requestAnimationFrame(this.setupAnimate.bind(this));
     }
@@ -97,7 +102,7 @@ class GameView {
   start(){
       this.game.addMonster();
       this.game.increaseMonsterNumbers();
-    for(let i = 0; i<20; i++){
+    for(let i = 0; i<50; i++){
       this.game.addBullets();
     }
     this.increaseSpeed();

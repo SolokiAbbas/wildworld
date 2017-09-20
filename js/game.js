@@ -33,6 +33,10 @@ class Game {
     this.grid.src = 'images/made-grid.png';
     this.ctx = ctx;
     this.sprites = [];
+    this.hoverEast = this.cannonImageEast;
+    this.hoverWest = this.cannonImageWest;
+    this.hoverSouth = this.cannonImageSouth;
+    this.hoverNorth = this.cannonImageNorth;
   }
 
   addBullets(){
@@ -369,6 +373,39 @@ class Game {
       });
     };
   }
-}
+
+  makeOpaque(image){
+    image.style.filter = "alpha(opacity=20)";
+    image.style.MozOpacity   = 0.20;
+    image.style.opacity      = 0.20;
+    image.style.KhtmlOpacity = 0.20;
+  }
+
+  outBound(hoverPos){
+    if(hoverPos.x < 960 && hoverPos.y < 600 && hoverPos.x > 30 && hoverPos.y >35){
+      return true;
+    }
+    return false;
+  }
+
+  drawHover(ctx, hoverPos, direction){
+
+          if(this.outBound(hoverPos) && direction === "west"){
+              this.makeOpaque(this.hoverWest);
+              ctx.drawImage(this.hoverWest, hoverPos.x-20, hoverPos.y-30, 75, 50);
+          }else if(this.outBound(hoverPos)  && direction === "east"){
+              this.makeOpaque(this.hoverEast);
+              ctx.drawImage(this.hoverEast, hoverPos.x-20, hoverPos.y-30, 75, 50);
+        }else if(this.outBound(hoverPos)  && direction === "north"){
+              this.makeOpaque(this.hoverNorth);
+              ctx.drawImage(this.hoverNorth, hoverPos.x-20, hoverPos.y-30, 50, 75);
+        }else if(this.outBound(hoverPos)  && direction === "south"){
+              this.makeOpaque(this.hoverSouth);
+              ctx.drawImage(this.hoverSouth, hoverPos.x-20, hoverPos.y-30, 50, 75);
+
+            }
+          }
+    }
+
 
 export default Game;
