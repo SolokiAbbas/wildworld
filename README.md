@@ -8,6 +8,16 @@ Link to game:
 [Wild World](https://solokiabbas.github.io/wildworld/)
 
 
+Place Cannons on the Grid by clicking a cannon and then clicking the grid
+
+![Cannon](/docs/images/intro.png)
+
+
+Monsters move in a path and the cannons shoot the monsters. You get gold for killing monsters.
+
+![Bears](/docs/images/path.png)
+
+
 ## Features
 =======================================================================
 

@@ -30,7 +30,7 @@ class Game {
     this.hearts.src = 'images/heart.png';
     this.background = background;
     this.grid = new Image();
-    this.grid.src = 'images/made-grid.png';
+    this.grid.src = 'images/make-grid.png';
     this.ctx = ctx;
     this.sprites = [];
     this.hoverEast = this.cannonImageEast;
@@ -352,7 +352,7 @@ class Game {
         ctx.drawImage(this.hearts, (i*50)+20, 640, 50, 50);
       }
 
-      ctx.drawImage(this.grid, 3,4, 1000, 600);
+      ctx.drawImage(this.grid, 4,4, 1016, 600);
 
       this.cannons.forEach((object)=>{
         ctx.save();
@@ -382,7 +382,7 @@ class Game {
   }
 
   outBound(hoverPos){
-    if(hoverPos.x < 960 && hoverPos.y < 600 && hoverPos.x > 30 && hoverPos.y >35){
+    if(hoverPos.x < 970 && hoverPos.y < 600 && hoverPos.x > 30 && hoverPos.y >35){
       return true;
     }
     return false;
