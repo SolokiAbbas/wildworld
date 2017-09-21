@@ -272,7 +272,7 @@ class Game {
   }
 
   isGameOver(){
-    if(this.user.showLife() <= 0){
+    if(this.user.showLife() <= 0 ){
       return true;
     } else {
       return false;
