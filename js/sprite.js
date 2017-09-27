@@ -40,6 +40,11 @@ class Sprite {
       this.ctx.drawImage(this.spriteX,this.srcX,this.srcY,this.width,this.height,this.x-150,this.y-100,this.width,this.height);
   }
 
+  loadFrame(){
+    this.spriteX.onload = () => {
+    };
+  }
+
   update(){
     this.updateFrame();
   }

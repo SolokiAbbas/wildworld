@@ -283,6 +283,7 @@ class Game {
 
     if (this.sprites.length > 0){
       for(let i = 0; i<this.sprites.length; i++){
+        this.spritesX[i].loadFrame();
         this.sprites[i].drawFrame();
         this.sprites[i].update();
         if(this.sprites[i].delete === true){
