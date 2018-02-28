@@ -4,6 +4,7 @@
   flex-direction: row;
   width: 1200px;
   height: 15%;
+  padding-left: 3%;
 }
 
 .git{
@@ -283,4 +284,14 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
+}
+
+.wild-title {
+  font-family: "Oxygen";
+  
+}
+
+.body-image {
+  background-image: url("../images/background/background-all.jpg");
+  background-size: cover;
 }

@@ -117,49 +117,49 @@ class GameView {
         x: e.offsetX,
         y: e.offsetY
       };
-        if(Util.dist([pos.x, pos.y], [1150,90]) < 40){
+        if(Util.dist([pos.x, pos.y], [1160,90]) < 40){
           this.ctx.beginPath();
-          this.ctx.moveTo(1150, 70);
-          this.ctx.lineTo(1175, 90);
-          this.ctx.lineTo(1175, 50);
+          this.ctx.moveTo(1190, 70);
+          this.ctx.lineTo(1195, 90);
+          this.ctx.lineTo(1195, 50);
           this.ctx.fillStyle = "black";
           this.ctx.fill();
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,100, 120,300);
+          this.ctx.fillRect(1179,100, 120,300);
           this.singleCannon.direction = "west";
-        }else if(Util.dist([pos.x, pos.y], [1150,160]) < 40){
+        }else if(Util.dist([pos.x, pos.y], [1160,160]) < 40){
           this.ctx.beginPath();
-          this.ctx.moveTo(1150, 140);
-          this.ctx.lineTo(1175, 160);
-          this.ctx.lineTo(1175, 120);
+          this.ctx.moveTo(1180, 140);
+          this.ctx.lineTo(1195, 160);
+          this.ctx.lineTo(1195, 120);
           this.ctx.fillStyle = "black";
           this.ctx.fill();
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,170, 120,250);
+          this.ctx.fillRect(1179,170, 120,250);
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,49, 120,50);
+          this.ctx.fillRect(1179,49, 120,50);
           this.singleCannon.direction = "east";
-        }else if(Util.dist([pos.x, pos.y], [1150,290]) < 55){
+        }else if(Util.dist([pos.x, pos.y], [1160,290]) < 55){
           this.ctx.beginPath();
-          this.ctx.moveTo(1150, 240);
-          this.ctx.lineTo(1175, 260);
-          this.ctx.lineTo(1175, 220);
+          this.ctx.moveTo(1170, 240);
+          this.ctx.lineTo(1195, 260);
+          this.ctx.lineTo(1195, 220);
           this.ctx.fillStyle = "black";
           this.ctx.fill();
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,265, 120,150);
+          this.ctx.fillRect(1179,265, 120,150);
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,49, 120,150);
+          this.ctx.fillRect(1179,49, 120,150);
           this.singleCannon.direction = "north";
-        }else if(Util.dist([pos.x, pos.y], [1150,420]) < 55){
+        }else if(Util.dist([pos.x, pos.y], [1160,420]) < 55){
           this.ctx.beginPath();
-          this.ctx.moveTo(1150, 370);
-          this.ctx.lineTo(1175, 390);
-          this.ctx.lineTo(1175, 350);
+          this.ctx.moveTo(1160, 370);
+          this.ctx.lineTo(1185, 390);
+          this.ctx.lineTo(1185, 350);
           this.ctx.fillStyle = "black";
           this.ctx.fill();
           this.ctx.fillStyle = "grey";
-          this.ctx.fillRect(1149,49, 120,300);
+          this.ctx.fillRect(1179,49, 120,300);
           this.singleCannon.direction = "south";
         }
 
